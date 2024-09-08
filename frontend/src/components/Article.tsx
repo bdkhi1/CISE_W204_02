@@ -1,22 +1,21 @@
 export type Article = {
     _id?: string;
     title?: string;
-    authors?: string;
-    source?: string;
-    pubyear?: string;
-    doi?: string;
-    claim?: string;
-    evidence?: string;
+    isbn?: string;
+    author?: string;
+    description?: string;
+    published_date?: Date;
+    publisher?: string;
+    updated_date?: Date;
 };
 
-// Default empty values for the Article type
 export const DefaultEmptyArticle: Article = {
-    _id: undefined,
-    title: '',
-    authors: '',
-    source: '',
-    pubyear: '',
-    doi: '',
-    claim: '',
-    evidence: '',
-};
+    _id: undefined, 
+    title: '', 
+    isbn: '',
+    author: '',
+    description: '',
+    published_date: undefined,
+    publisher: '',
+    updated_date: undefined,
+}

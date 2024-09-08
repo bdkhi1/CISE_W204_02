@@ -2,7 +2,7 @@
 
 import ShowArticleDetails from "@/components/ShowArticleDetails";
 
-export default function ShowBook() {
+export default function ShowArticle() {
   return (
     <ShowArticleDetails />
   )

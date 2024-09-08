@@ -5,43 +5,26 @@ import { Article, DefaultEmptyArticle } from "./Article";
 
 const CreateArticleComponent = () => {
   const navigate = useRouter();
-  
+
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setArticle(prevArticle => ({
-      ...prevArticle,
-      [name]: value
-    }));
+    setArticle({ ...article, [event.target.name]: event.target.value });
   };
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     console.log(article);
-
-    try {
-      const response = await fetch("http://localhost:8082/api/articles", {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(article)
-      });
-
-      console.log(response);
-
-      if (response.ok) {
+    fetch("http://localhost:8082/api/articles", {method: 'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(article)})
+      .then((res) => {
+        console.log(res);
         setArticle(DefaultEmptyArticle);
+        // Push to /
         navigate.push("/");
-      } else {
-        const errorText = await response.text(); // Capture error details from response
-        console.error("Failed to create article:", errorText);
-        throw new Error("Failed to create article");
-      }
-    } catch (err) {
-      console.error('Error from CreateArticleComponent:', err);
-    }
+      })
+      .catch((err) => {
+        console.log('Error from CreateArticle: ' + err);
+      });
   };
 
   return (
@@ -56,7 +39,7 @@ const CreateArticleComponent = () => {
           </div>
           <div className="col-md-10 m-auto">
             <h1 className="display-4 text-center">Add Article</h1>
-            <p className="lead text-center">Create a new article</p>
+            <p className="lead text-center">Create new article</p>
             <form noValidate onSubmit={onSubmit}>
               <div className="form-group">
                 <input
@@ -64,7 +47,7 @@ const CreateArticleComponent = () => {
                   placeholder="Title of the Article"
                   name="title"
                   className="form-control"
-                  value={article.title || ''}
+                  value={article.title}
                   onChange={onChange}
                 />
               </div>
@@ -72,10 +55,10 @@ const CreateArticleComponent = () => {
               <div className="form-group">
                 <input
                   type="text"
-                  placeholder="Authors"
-                  name="authors"
+                  placeholder="ISBN"
+                  name="isbn"
                   className="form-control"
-                  value={article.authors || ''}
+                  value={article.isbn}
                   onChange={onChange}
                 />
               </div>
@@ -83,10 +66,10 @@ const CreateArticleComponent = () => {
               <div className="form-group">
                 <input
                   type="text"
-                  placeholder="Source"
-                  name="source"
+                  placeholder="Author"
+                  name="author"
                   className="form-control"
-                  value={article.source || ''}
+                  value={article.author}
                   onChange={onChange}
                 />
               </div>
@@ -94,10 +77,21 @@ const CreateArticleComponent = () => {
               <div className="form-group">
                 <input
                   type="text"
-                  placeholder="Publication Year"
-                  name="pubyear"
+                  placeholder="Describe this article"
+                  name="description"
                   className="form-control"
-                  value={article.pubyear || ''}
+                  value={article.description}
+                  onChange={onChange}
+                />
+              </div>
+              <br />
+              <div className="form-group">
+                <input
+                  type="date"
+                  placeholder="published_date"
+                  name="published_date"
+                  className="form-control"
+                  value={article.published_date?.toString()}
                   onChange={onChange}
                 />
               </div>
@@ -105,32 +99,10 @@ const CreateArticleComponent = () => {
               <div className="form-group">
                 <input
                   type="text"
-                  placeholder="DOI"
-                  name="doi"
+                  placeholder="Publisher of this Article"
+                  name="publisher"
                   className="form-control"
-                  value={article.doi || ''}
-                  onChange={onChange}
-                />
-              </div>
-              <br />
-              <div className="form-group">
-                <input
-                  type="text"
-                  placeholder="Claim"
-                  name="claim"
-                  className="form-control"
-                  value={article.claim || ''}
-                  onChange={onChange}
-                />
-              </div>
-              <br />
-              <div className="form-group">
-                <input
-                  type="text"
-                  placeholder="Evidence"
-                  name="evidence"
-                  className="form-control"
-                  value={article.evidence || ''}
+                  value={article.publisher}
                   onChange={onChange}
                 />
               </div>

@@ -1,20 +1,24 @@
-'use client';
-
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, ChangeEventHandler } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Article, DefaultEmptyArticle } from './Article'; // Update import
+import { Article, DefaultEmptyArticle } from './Article';
 import Link from 'next/link';
 
 function UpdateArticleInfo() {
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
-  const { id } = useParams<{ id: string }>(); // Extract id from useParams
+  const id = useParams<{ id: string }>().id;
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`http://localhost:8082/api/articles/${id}`) // Update API endpoint
-      .then((res) => res.json())
-      .then((json) => setArticle(json))
-      .catch((err) => console.log('Error from UpdateArticleInfo: ' + err));
+    fetch(`http://localhost:8082/api/articles/${id}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        setArticle(json);
+      })
+      .catch((err) => {
+        console.log('Error from UpdateArticleInfo: ' + err);
+      });
   }, [id]);
 
   const inputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,18 +27,18 @@ function UpdateArticleInfo() {
 
   const textAreaOnChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setArticle({ ...article, [event.target.name]: event.target.value });
-  };
+  }
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8082/api/articles/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(article),
-    })
-      .then(() => router.push(`/show-article/${id}`))
-      .catch((err) => console.log('Error from UpdateArticleInfo: ' + err));
+    fetch(`http://localhost:8082/api/articles/${id}`, {method: 'PUT', headers: {"Content-Type": "application/json"}, body: JSON.stringify(article)})
+      .then((res) => {
+        router.push(`/show-article/${id}`);
+      })
+      .catch((err) => {
+        console.log('Error from UpdateArticleInfo: ' + err);
+      });
   };
 
   return (
@@ -49,7 +53,7 @@ function UpdateArticleInfo() {
           </div>
           <div className='col-md-8 m-auto'>
             <h1 className='display-4 text-center'>Edit Article</h1>
-            <p className='lead text-center'>Update Article&apos;s Info</p>
+            <p className='lead text-center'>Update Article&quot;s Info</p>
           </div>
         </div>
 
@@ -69,77 +73,65 @@ function UpdateArticleInfo() {
             <br />
 
             <div className='form-group'>
-              <label htmlFor='authors'>Authors</label>
+              <label htmlFor='isbn'>ISBN</label>
               <input
                 type='text'
-                placeholder='Authors'
-                name='authors'
+                placeholder='ISBN'
+                name='isbn'
                 className='form-control'
-                value={article.authors}
+                value={article.isbn}
                 onChange={inputOnChange}
               />
             </div>
             <br />
 
             <div className='form-group'>
-              <label htmlFor='source'>Source</label>
+              <label htmlFor='author'>Author</label>
               <input
                 type='text'
-                placeholder='Source'
-                name='source'
+                placeholder='Author'
+                name='author'
                 className='form-control'
-                value={article.source}
+                value={article.author}
                 onChange={inputOnChange}
               />
             </div>
             <br />
 
             <div className='form-group'>
-              <label htmlFor='pubyear'>Publication Year</label>
-              <input
-                type='text'
-                placeholder='Publication Year'
-                name='pubyear'
-                className='form-control'
-                value={article.pubyear}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='doi'>DOI</label>
-              <input
-                type='text'
-                placeholder='DOI'
-                name='doi'
-                className='form-control'
-                value={article.doi}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='claim'>Claim</label>
+              <label htmlFor='description'>Description</label>
               <textarea
-                placeholder='Claim'
-                name='claim'
+                placeholder='Description of the Article'
+                name='description'
                 className='form-control'
-                value={article.claim}
+                value={article.description}
                 onChange={textAreaOnChange}
               />
             </div>
             <br />
 
             <div className='form-group'>
-              <label htmlFor='evidence'>Evidence</label>
-              <textarea
-                placeholder='Evidence'
-                name='evidence'
+              <label htmlFor='published_date'>Published Date</label>
+              <input
+                type='text'
+                placeholder='Published Date'
+                name='published_date'
                 className='form-control'
-                value={article.evidence}
-                onChange={textAreaOnChange}
+                value={article.published_date?.toString()}
+                onChange={inputOnChange}
+              />
+            </div>
+            <br />
+
+            <div className='form-group'>
+              <label htmlFor='publisher'>Publisher</label>
+              <input
+                type='text'
+                placeholder='Publisher of the Article'
+                name='publisher'
+                className='form-control'
+                value={article.publisher}
+                onChange={inputOnChange}
               />
             </div>
             <br />
