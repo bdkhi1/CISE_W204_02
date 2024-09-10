@@ -1,6 +1,7 @@
 import React from 'react';
 import { Article } from './Article';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface IProp {
   article?: Article;
@@ -16,10 +17,11 @@ const ArticleCard = ({ article }: IProp) => {
   };
   return (
     <div className='card-container' onClick={onClick}>
-      <img
-        src='https://contenthub-static.grammarly.com/blog/wp-content/uploads/2022/08/BMD-3398.png'
+      <Image
+        src="/images/articleImage.png"
         alt='Articles'
-        height={200}
+        width={400} 
+        height={250} 
       />
       <div className='desc'>
         <h2>
