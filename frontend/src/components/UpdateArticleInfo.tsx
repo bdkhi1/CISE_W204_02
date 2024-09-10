@@ -1,24 +1,22 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent, ChangeEventHandler } from 'react';
+'use client';
+
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Article, DefaultEmptyArticle } from './Article';
 import Link from 'next/link';
 
 function UpdateArticleInfo() {
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
-  const id = useParams<{ id: string }>().id;
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`http://localhost:8082/api/articles/${id}`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setArticle(json);
-      })
-      .catch((err) => {
-        console.log('Error from UpdateArticleInfo: ' + err);
-      });
+    if (id) {
+      fetch(`http://localhost:8082/api/articles/${id}`)
+        .then((res) => res.json())
+        .then((json) => setArticle(json))
+        .catch((err) => console.log('Error from UpdateArticleInfo: ' + err));
+    }
   }, [id]);
 
   const inputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,18 +25,18 @@ function UpdateArticleInfo() {
 
   const textAreaOnChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setArticle({ ...article, [event.target.name]: event.target.value });
-  }
+  };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8082/api/articles/${id}`, {method: 'PUT', headers: {"Content-Type": "application/json"}, body: JSON.stringify(article)})
-      .then((res) => {
-        router.push(`/show-article/${id}`);
-      })
-      .catch((err) => {
-        console.log('Error from UpdateArticleInfo: ' + err);
-      });
+    fetch(`http://localhost:8082/api/articles/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(article),
+    })
+      .then(() => router.push(`/show-article/${id}`))
+      .catch((err) => console.log('Error from UpdateArticleInfo: ' + err));
   };
 
   return (
@@ -53,7 +51,7 @@ function UpdateArticleInfo() {
           </div>
           <div className='col-md-8 m-auto'>
             <h1 className='display-4 text-center'>Edit Article</h1>
-            <p className='lead text-center'>Update Article&quot;s Info</p>
+            <p className='lead text-center'>Update Article&apos;s Info</p>
           </div>
         </div>
 
