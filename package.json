@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "bootstrap": "^5.3.3"
+  },
+  "scripts": {
+    "test": "jest",  // if you're using jest
+    "test:ci": "jest --ci"  // add the CI version of the test script
   }
 }
