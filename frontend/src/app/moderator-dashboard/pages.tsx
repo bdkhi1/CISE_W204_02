@@ -1,5 +1,9 @@
 'use client'
 
-export default function Page1() {
-  return <h1>moderator dashboard</h1>;
+import ModeratorDashboardComponent from "@/components/ModeratorDashboard";
+
+export default function ModeratorDashboard() {
+  return (
+    <ModeratorDashboardComponent />
+  )
 }
