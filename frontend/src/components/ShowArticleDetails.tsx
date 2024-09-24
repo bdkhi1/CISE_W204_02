@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 function ShowArticleDetails() {
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
-  const { id } = useParams<{ id: string }>();
+  const { _id } = useParams<{ id: string }>();
   const navigate = useRouter();
 
   useEffect(() => {

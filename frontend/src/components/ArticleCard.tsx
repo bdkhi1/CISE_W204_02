@@ -21,11 +21,11 @@ const ArticleCard = ({ article }: IProp) => {
         src="/images/articleImage.png"
         alt='Articles'
         width={400} 
-        height={250} 
+        height={400} 
       />
       <div className='desc'>
         <h2>
-          {article.title}
+          <b>{article.title}</b>
         </h2>
         <h3>{article.author}</h3>
         <p>{article.description}</p>
