@@ -1,12 +1,7 @@
-import React from "react";
+"use client";
 
-const GeneralDashboard = () => {
-  return (
-    <div>
-      <h1>General Dashboard</h1>
-      <p>This is the general dashboard page.</p>
-    </div>
-  );
-};
+import GeneralDashboard from "@/components/general-dashboard/GeneralDasboard";
 
-export default GeneralDashboard;
+export default function ShowGeneralDashboard() {
+  return <GeneralDashboard />;
+}
