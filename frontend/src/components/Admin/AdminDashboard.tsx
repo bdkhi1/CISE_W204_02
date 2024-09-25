@@ -21,28 +21,20 @@ const AdminDashboard: React.FC = () => {
   return (
     <>
       <PopulatedNavBar />
+      
       <div className={styles.adminContainer}>
         <h1 className={styles.adminTitle}>Admin Dashboard</h1>
         <p className={styles.adminDesc}>Manage articles and monitor submissions.</p>
 
         {}
+        <div className={styles.buttonContainer}>
+          <button className={styles.btn} >Edit</button>
+          <button className={`${styles.btn} ${styles.btnDanger}`}>Delete</button>
+        </div>
         <SortableTable onEdit={handleEdit} onDelete={handleDelete} />
 
         {}
-        <div className={`${styles.buttonContainer} flex justify-center mt-4`}>
-          <button
-            className={`${styles.btn} mr-4`}
-            onClick={() => handleEdit('placeholder-id')}
-          >
-            Edit Article
-          </button>
-          <button
-            className={`${styles.btn} ${styles.btnDanger}`}
-            onClick={() => handleDelete('placeholder-id')}
-          >
-            Delete Article
-          </button>
-        </div>
+        
       </div>
     </>
   );

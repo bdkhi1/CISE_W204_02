@@ -66,9 +66,7 @@ function SortableTable() {
         return [
           {
             id: 'selection',
-            Header: ({ getToggleAllRowsSelectedProps }) => (
-              <Checkbox {...getToggleAllRowsSelectedProps()} />
-            ),
+            Header: '', 
             Cell: ({ row }) => (
               <Checkbox {...row.getToggleRowSelectedProps()} />
             ),
