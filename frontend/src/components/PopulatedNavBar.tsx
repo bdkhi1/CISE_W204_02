@@ -23,8 +23,8 @@ const PopulatedNavBar = () => {
         </NavItem>
       )}
 
-      {pathname == "/moderator" && (
-        <NavItem route="/moderator" end>
+      {pathname == "/moderator-dashboard" && (
+        <NavItem route="/moderator-dashboard" end>
           Moderator
         </NavItem>
       )}
