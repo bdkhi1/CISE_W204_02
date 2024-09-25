@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import AdminTable from "@/components/Tables/AdminTable/SortableTable";
-
+import PopulatedNavBar from '../PopulatedNavBar';
 export default function AdminDashboard() {
   const handleEdit = (articleId) => {
 
@@ -15,6 +15,7 @@ export default function AdminDashboard() {
 
   return (
     <main>
+      <PopulatedNavBar  />
       <div className="admin-container">
         <h1 className='AdminTitle'>Admin Dashboard</h1>
         <p className='AdminDesc'>Manage articles and monitor submissions.</p>
@@ -31,7 +32,7 @@ export default function AdminDashboard() {
           </button>
           <button 
             className="btn btn-danger" 
-            onClick={() => handleDelete(/* Pass the article ID here */)}
+            onClick={() => handleDelete('http://localhost:8082/api/articles/${id}')}
           >
             Delete Article
           </button>
