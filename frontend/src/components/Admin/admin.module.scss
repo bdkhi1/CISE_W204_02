@@ -1,4 +1,6 @@
-/* Admin Table Styles */
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 /* Admin Table Styles */
 .pageBackground {
   background-color: #121212;
@@ -30,34 +32,45 @@
 }
 
 .sortableTable {
-  width: 80%;
   border-collapse: collapse;
   table-layout: fixed;
-
-  th, td {
-    padding: 10px;
-    border: 1px solid #444;
-    background-color: #1e1e1e;
-    text-align: center;
-    color: #ffffff;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   tr {
     height: 50px;
-
     &:hover {
-      background-color: #555; 
+      background-color: #000000;
+      user-select: none;
+
     }
 
     &:nth-child(even) {
       background-color: #2a2a2a;
     }
+
+    td {
+      border: 1px solid #fefefe;
+      padding: 10px;
+      background-color: #1e1e1e;
+      text-align: center;
+      color: #ffffff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #2a2a2a;
+        color: #c2d3ade1;
+        user-select: none;
+      }
+    }
   }
 
   th {
+    padding: 10px;
+    border: 1px solid #fefefe;
+    background-color: #1e1e1e;
+    text-align: center;
+    color: #ffffff;
+
     &:not(:last-child) {
       border-right: 1px solid #444;
     }
@@ -68,55 +81,9 @@
   }
 }
 
-.customCheckbox {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-
-  input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-
-    &:checked + .checkmark {
-      background-color: yellow; 
-      border-color: yellow; 
-
-      &::after {
-        content: "A"; 
-        position: absolute;
-        display: block;
-        left: 50%; 
-        top: 50%; 
-        transform: translate(-50%, -50%); 
-        color: rgb(0, 0, 0); 
-        font-size: 16px; 
-      }
-    }
-
-    &:focus + .checkmark {
-      outline: 2px solid #007bff; 
-    }
-  }
-
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%; 
-    width: 100%; 
-    background-color: #1e1e1e; 
-    border: 2px solid #444;
-    border-radius: 4px; 
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-  }
-}
-
 .btn {
   background-color: #007bff;
-  color: white;
+  color: rgba(0, 0, 0, 0.641);
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -128,7 +95,7 @@
   }
 
   &.btnDanger {
-    background-color: #dc3545;
+    background-color: #ee606e;
 
     &:hover {
       background-color: #c82333;

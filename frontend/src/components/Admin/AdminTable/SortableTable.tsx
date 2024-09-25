@@ -82,7 +82,7 @@ function SortableTable() {
   const firstPageRows = rows.slice(0, 10);
 
   return (
-    <div className={styles.AdminTable}>
+    <div className={styles.sortableTable}>
       <div>
         <table {...getTableProps()}>
           <thead>

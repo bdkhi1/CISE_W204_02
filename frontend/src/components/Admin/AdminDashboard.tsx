@@ -25,10 +25,10 @@ const AdminDashboard: React.FC = () => {
         <h1 className={styles.adminTitle}>Admin Dashboard</h1>
         <p className={styles.adminDesc}>Manage articles and monitor submissions.</p>
 
-        {/* Passing handleEdit and handleDelete to SortableTable */}
+        {}
         <SortableTable onEdit={handleEdit} onDelete={handleDelete} />
 
-        {/* Button Container */}
+        {}
         <div className={`${styles.buttonContainer} flex justify-center mt-4`}>
           <button
             className={`${styles.btn} mr-4`}
