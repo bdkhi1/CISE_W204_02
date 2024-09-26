@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import { useTable, useSortBy, Column, HeaderGroup, Row, Cell } from 'react-table';
+import { useTable, useSortBy, Column, HeaderGroup, Row, Cell, useGlobalFilter } from 'react-table';
 import { COLUMNS } from './columns'; 
 import useFetchArticles from './fetchArticles'; 
 import styles from './table.module.scss';  
+import { TableFilter } from './TableFilter';
 
 // The data type for the article that is to be manipulated for the table.
 interface Article {
@@ -19,26 +20,29 @@ interface Article {
 export const BasicTable: React.FC = () => {
     const articles = useFetchArticles();
     
-    const columns = useMemo<Column<Article>[]>(() => COLUMNS, [])
-    const data = useMemo<Article[]>(() => articles, [articles])
+    const columns = useMemo<Column<Article>[]>(() => COLUMNS, []);
+    const data = useMemo<Article[]>(() => articles, [articles]);
     
-    const tableInstance = useTable<Article>(
-        {
-            columns,
-            data
-        },
-        useSortBy
-    )
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        footerGroups,
+        rows,
+        prepareRow,
+        state,
+        setGlobalFilter,
 
-    const { 
-        getTableProps, 
-        getTableBodyProps, 
-        headerGroups, 
-        rows, 
-        prepareRow 
-    } = tableInstance
+    } = useTable({
+        columns,
+        data
+    }, useGlobalFilter, useSortBy); // Corrected order of hooks
+
+    const { globalFilter } = state;
 
     return (
+        <>
+        <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
         <div className={styles.tableContainer}>
             <table {...getTableProps()} className={styles.darkThemeTable}>
                 <thead>
@@ -59,7 +63,7 @@ export const BasicTable: React.FC = () => {
                 {/*Contents of the header for the each of the columns*/}
                 <tbody {...getTableBodyProps()}>
                     {rows.map((row: Row<Article>) => {
-                        prepareRow(row)
+                        prepareRow(row);
                         return (
                             <tr {...row.getRowProps()}>
                                 {row.cells.map((cell: Cell<Article>) => {
@@ -67,15 +71,16 @@ export const BasicTable: React.FC = () => {
                                         <td {...cell.getCellProps()}>
                                             {cell.render('Cell')}
                                         </td>
-                                    )
+                                    );
                                 })}
                             </tr>
-                        )
+                        );
                     })}
                 </tbody>
             </table>
         </div>
-    )
-}
+        </>
+    );
+};
 
 export default BasicTable;
