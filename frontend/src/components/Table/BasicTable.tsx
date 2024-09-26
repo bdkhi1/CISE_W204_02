@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useTable } from 'react-table';
 import { COLUMNS } from './columns'; // Your columns setup
 import useFetchArticles from './fetchArticles'; // Import the fetch hook
+import styles from './table.module.scss';  // Import the SCSS file
 
 export const BasicTable = () => {
     // Fetch the articles using the custom hook
@@ -20,8 +21,8 @@ export const BasicTable = () => {
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance
 
     return (
-        <div>
-            <table {...getTableProps()}>
+        <div className={styles.tableContainer}>
+            <table {...getTableProps()} className={styles.darkThemeTable}>
                 {/* Header for the table */}
                 <thead>
                     {
@@ -45,9 +46,24 @@ export const BasicTable = () => {
                 </thead>
                 {/* Body of the table */}
                 <tbody {...getTableBodyProps()}>
-                    <tr>
-                        <td></td>
-                    </tr>
+                    {
+                        rows.map(row => {
+                            prepareRow(row)
+                            return (
+                                <tr {...row.getRowProps()}>
+                                    {
+                                        row.cells.map(cell => {
+                                            return <td {...cell.getCellProps}>
+                                                {cell.render('Cell')}
+                                            </td>
+                                        })
+                                    }
+                                    
+                                </tr>
+                            )
+                        })
+                    }
+                    
                 </tbody>
             </table>
         </div>
