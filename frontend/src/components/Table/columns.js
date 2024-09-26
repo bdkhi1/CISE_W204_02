@@ -31,4 +31,14 @@ export const COLUMNS = [
         Header: 'Evidence Level',
         accessor: 'evidence'
     },
+    {
+        Header: 'Actions',
+        id: 'actions',
+        Cell: ({ row }) => (
+          <div>
+            <button>Button 1</button>
+            <button>Button 2</button>
+          </div>
+        ),
+      },
 ]

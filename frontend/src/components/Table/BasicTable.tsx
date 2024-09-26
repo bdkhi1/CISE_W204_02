@@ -36,7 +36,7 @@ export const BasicTable: React.FC = () => {
     } = useTable({
         columns,
         data
-    }, useGlobalFilter, useSortBy); // Corrected order of hooks
+    }, useGlobalFilter, useSortBy); 
 
     const { globalFilter } = state;
 
