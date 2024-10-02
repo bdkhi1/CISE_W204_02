@@ -1,15 +1,14 @@
-import React, {FC} from 'react';
-import "./button-custom.module.scss";
+import React, {FC, Component} from 'react';
+import styles from "./button-custom.module.scss";
 
 interface ButtonCustomProps {
   label: string;
   onClick: () => void;
-  style?: "./button-custom.module.scss";
 }
 
-const ButtonCustom: FC<ButtonCustomProps> = ({ label, onClick, style }) => {
+const ButtonCustom: FC<ButtonCustomProps> = ({ label, onClick}) => {
   return (
-    <button className="button-custom" onClick={onClick} style={style}>
+    <button className= {styles.buttoncustom} onClick={onClick}>
       {label}
     </button>
   );
