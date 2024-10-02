@@ -71,13 +71,13 @@ function UpdateArticleInfo() {
             <br />
 
             <div className='form-group'>
-              <label htmlFor='isbn'>ISBN</label>
+              <label htmlFor='isbn'>Claim</label>
               <input
                 type='text'
                 placeholder='ISBN'
                 name='isbn'
                 className='form-control'
-                value={article.isbn}
+                value={article.claim}
                 onChange={inputOnChange}
               />
             </div>
@@ -90,45 +90,45 @@ function UpdateArticleInfo() {
                 placeholder='Author'
                 name='author'
                 className='form-control'
-                value={article.author}
+                value={article.authors}
                 onChange={inputOnChange}
               />
             </div>
             <br />
 
             <div className='form-group'>
-              <label htmlFor='description'>Description</label>
+              <label htmlFor='description'>DOI</label>
               <textarea
                 placeholder='Description of the Article'
                 name='description'
                 className='form-control'
-                value={article.description}
+                value={article.doi}
                 onChange={textAreaOnChange}
               />
             </div>
             <br />
 
             <div className='form-group'>
-              <label htmlFor='published_date'>Published Date</label>
+              <label htmlFor='published_date'>Year of Publishing</label>
               <input
                 type='text'
                 placeholder='Published Date'
                 name='published_date'
                 className='form-control'
-                value={article.published_date?.toString()}
+                value={article.pubyear?.toString()}
                 onChange={inputOnChange}
               />
             </div>
             <br />
 
             <div className='form-group'>
-              <label htmlFor='publisher'>Publisher</label>
+              <label htmlFor='publisher'>Source</label>
               <input
                 type='text'
                 placeholder='Publisher of the Article'
                 name='publisher'
                 className='form-control'
-                value={article.publisher}
+                value={article.source}
                 onChange={inputOnChange}
               />
             </div>
