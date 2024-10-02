@@ -6,7 +6,6 @@ import NavDropdown from "./nav/NavDropdown";
 import NavItem from "./nav/NavItem";
 
 const PopulatedNavBar = () => {
-
   return (
     <NavBar>
       <NavItem>SPEED</NavItem>
