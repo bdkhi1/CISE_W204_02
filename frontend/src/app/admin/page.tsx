@@ -1,13 +1,15 @@
 'use client';
 
 import React from 'react';
-import AdminDashBoard from "@/components/Admin/AdminDashboard";
-import styles from "@/components/Admin/admin.module.scss";
+import BasicTable from '@/components/Table/BasicTable';
+import PopulatedNavBar from '@/components/PopulatedNavBar';
+import styles from "@/components/dashboard.module.scss";
 
 export default function AdminPage() {
   return (
     <main className={styles.pageBackground}>
-      <AdminDashBoard />
+      <PopulatedNavBar />
+      <BasicTable />
     </main>
   );
 }
