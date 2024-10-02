@@ -53,27 +53,27 @@ function ShowArticleDetails() {
                   <tr>
                     <th scope='row'>2</th>
                     <td>Author</td>
-                    <td>{article.author}</td>
+                    <td>{article.authors}</td>
                   </tr>
                   <tr>
                     <th scope='row'>3</th>
-                    <td>ISBN</td>
-                    <td>{article.isbn}</td>
+                    <td>Claim</td>
+                    <td>{article.claim}</td>
                   </tr>
                   <tr>
                     <th scope='row'>4</th>
-                    <td>Publisher</td>
-                    <td>{article.publisher}</td>
+                    <td>Author(s)</td>
+                    <td>{article.authors}</td>
                   </tr>
                   <tr>
                     <th scope='row'>5</th>
-                    <td>Published Date</td>
-                    <td>{article.published_date?.toString()}</td>
+                    <td>Published Year</td>
+                    <td>{article.pubyear?.toString()}</td>
                   </tr>
                   <tr>
                     <th scope='row'>6</th>
-                    <td>Description</td>
-                    <td>{article.description}</td>
+                    <td>Evidence</td>
+                    <td>{article.evidence}</td>
                   </tr>
                 </tbody>
               </table>
