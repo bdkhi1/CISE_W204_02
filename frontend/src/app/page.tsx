@@ -1,11 +1,13 @@
-'use client'
+"use client";
 
+import PopulatedNavBar from "@/components/PopulatedNavBar";
 import ShowArticleList from "@/components/ShowArticleList";
-import { BasicTable } from "@/components/Table/BasicTable";
-export default function Home() {
+
+export default function ShowGeneralDashboard() {
   return (
-    <main>
-      <BasicTable />
-    </main>
+    <>
+      <PopulatedNavBar />
+      <ShowArticleList />
+    </>
   );
 }
