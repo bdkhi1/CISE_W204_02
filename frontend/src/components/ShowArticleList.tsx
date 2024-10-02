@@ -55,7 +55,7 @@ function ShowArticleList() {
           <div className="col-md-12 d-flex justify-content-between align-items-center">
             <SearchBar onSearch={handleSearch} />
             <Link
-              href="/create-article"
+              href="./create-article"
               className="btn btn-outline-warning float-right"
             >
               + Add New Article

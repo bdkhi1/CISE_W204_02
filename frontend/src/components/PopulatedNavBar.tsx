@@ -35,6 +35,16 @@ const PopulatedNavBar = () => {
         </NavItem>
       )}
 
+      {pathname == "/" && (
+        <>
+          <NavItem route="/analyst-dashboard" end>
+            Analyst
+          </NavItem>
+          <NavItem route="/moderator-dashboard">Moderator</NavItem>
+          <NavItem route="/admin-dashboard">Admin</NavItem>
+        </>
+      )}
+
       <NavItem route="/" end>
         Home
       </NavItem>
