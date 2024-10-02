@@ -1,0 +1,74 @@
+.navbar {
+    display: flex;
+    position: relative;
+    top: 0;
+    flex-direction: row;
+    width: 100%;
+    background-color: rgb(48, 48, 48);
+    align-items: center;
+    color: #ffffff;
+    font-size: 1.5em;
+    font-weight: bold;
+    transition: top 0.5s;
+    height: fit-content;
+  }
+  
+  .hide {
+    top: -3em;
+  }
+  
+  .navitem {
+    position: relative;
+    padding: 1em;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: default;
+    white-space: nowrap;
+  }
+  
+  .clickable {
+    @extend .navitem;
+    cursor: pointer;
+  }
+  
+  .clickable:hover {
+    backdrop-filter: brightness(50%);
+  }
+  
+  .dropdown_container {
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(48, 48, 48);
+    position: absolute;
+    top: 100%;
+    right: 0;
+  }
+  
+  .dropdown:hover {
+    cursor: pointer;
+    backdrop-filter: brightness(50%);
+  
+    .dropdown_container {
+      visibility: visible;
+    }
+  }
+  
+  .end {
+    margin-left: auto;
+  }
+  
+  .user_container {
+    position: absolute;
+    aspect-ratio: 1;
+    backdrop-filter: brightness(50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
+    border-radius: 100%;
+    left: 1em
+  }
+  
