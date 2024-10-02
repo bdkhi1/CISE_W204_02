@@ -48,41 +48,38 @@ function ShowArticleDetails() {
         </div>
         {/* Add margin-top to create space between the paragraph and the table */}
         <div className="row justify-content-center mt-4">
-          <div className="col-md-10">
-            <table className="table table-hover table-dark table-striped table-bordered">
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Title</td>
-                  <td>{article.title}</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Author</td>
-                  <td>{article.author}</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>ISBN</td>
-                  <td>{article.isbn}</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Publisher</td>
-                  <td>{article.publisher}</td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>Published Date</td>
-                  <td>{article.published_date?.toString()}</td>
-                </tr>
-                <tr>
-                  <th scope="row">6</th>
-                  <td>Description</td>
-                  <td>{article.description}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="col-md-10 m-auto">
+            <div>
+              <table className="table table-hover table-dark table-striped table-bordered">
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Title</td>
+                    <td>{article.title}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Author</td>
+                    <td>{article.authors}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Claim</td>
+                    <td>{article.claim}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>Published Year</td>
+                    <td>{article.pubyear?.toString()}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>Evidence</td>
+                    <td>{article.evidence}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div className="row justify-content-center">

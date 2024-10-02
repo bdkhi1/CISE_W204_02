@@ -67,7 +67,7 @@ const CreateArticleComponent = () => {
                   placeholder="ISBN"
                   name="isbn"
                   className="form-control"
-                  value={article.isbn}
+                  value={article.claim}
                   onChange={onChange}
                 />
               </div>
@@ -77,7 +77,7 @@ const CreateArticleComponent = () => {
                   placeholder="Author"
                   name="author"
                   className="form-control"
-                  value={article.author}
+                  value={article.authors}
                   onChange={onChange}
                 />
               </div>
@@ -87,7 +87,7 @@ const CreateArticleComponent = () => {
                   placeholder="Describe this article"
                   name="description"
                   className="form-control"
-                  value={article.description}
+                  value={article.evidence}
                   onChange={onChange}
                 />
               </div>
@@ -97,7 +97,7 @@ const CreateArticleComponent = () => {
                   placeholder="Published Date"
                   name="published_date"
                   className="form-control"
-                  value={article.published_date?.toString()}
+                  value={article.pubyear?.toString()}
                   onChange={onChange}
                 />
               </div>
@@ -107,7 +107,7 @@ const CreateArticleComponent = () => {
                   placeholder="Publisher of this Article"
                   name="publisher"
                   className="form-control"
-                  value={article.publisher}
+                  value={article.source}
                   onChange={onChange}
                 />
               </div>
