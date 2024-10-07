@@ -110,5 +110,3 @@ export const BasicTable: React.FC = () => {
 };
 
 export default BasicTable;
-
-
