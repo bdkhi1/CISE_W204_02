@@ -154,8 +154,8 @@ const CreateArticleComponent = () => {
               <div className="form-group">
                 <input
                   type="text"
-                  placeholder="ISBN"
-                  name="isbn"
+                  placeholder="DOI"
+                  name="doi"
                   className="form-control"
                   value={article.isbn}
                   onChange={onChange}
@@ -169,6 +169,9 @@ const CreateArticleComponent = () => {
                   name="author"
                   className="form-control"
                   value={article.author}
+=======
+                  value={article.doi}
+>>>>>>> Stashed changes
                   onChange={onChange}
                 />
               </div>
@@ -177,7 +180,7 @@ const CreateArticleComponent = () => {
                 <input
                   type="text"
                   placeholder="Describe this article"
-                  name="description"
+                  name="evidence"
                   className="form-control"
                   value={article.description}
                   onChange={onChange}
@@ -187,6 +190,7 @@ const CreateArticleComponent = () => {
               <div className="form-group">
                 <input
                   type="date"
+<<<<<<< Updated upstream
                   placeholder="published_date"
                   name="published_date"
                   className="form-control"
@@ -199,7 +203,7 @@ const CreateArticleComponent = () => {
                 <input
                   type="text"
                   placeholder="Publisher of this Article"
-                  name="publisher"
+                  name="source"
                   className="form-control"
                   value={article.publisher}
                   onChange={onChange}
