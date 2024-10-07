@@ -216,6 +216,25 @@ const CreateArticleComponent = () => {
                   onChange={onChange}
                 />
               </div>
+<<<<<<< Updated upstream
+=======
+              <div className="form-group">
+                <label htmlFor="claim">Select Claim</label>
+                <select
+                  name="claim"
+                  className="form-control"
+                  value={article.claim}
+                  onChange={onChange} // Correct onChange for select
+                >
+                  <option value="" disabled>Select a claim</option>
+                  {claims.map((claim, index) => (
+                    <option key={index} value={claim}>
+                      {claim}
+                    </option>
+                  ))}
+                </select>
+              </div>
+>>>>>>> Stashed changes
               <button
                 type="submit"
                 className="btn btn-outline-warning btn-block mt-4 mb-4 w-100"
@@ -226,6 +245,7 @@ const CreateArticleComponent = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
