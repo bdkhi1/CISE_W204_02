@@ -9,20 +9,22 @@ export class Article {
   title: string;
 
   @Prop({ required: true })
-  isbn: string;
+  authors: string;
 
   @Prop({ required: true })
-  author: string;
+  source: string;
 
   @Prop()
-  description: string;
+  doi: string;
 
   @Prop({ type: Date })
-  published_date: Date;
+  pubyear: Date;
 
   @Prop()
-  publisher: string;
-
+  claim: string;
+  @Prop()
+  evidence: string;
+  
   @Prop({ type: Date, default: Date.now })
   updated_date: Date;
 }

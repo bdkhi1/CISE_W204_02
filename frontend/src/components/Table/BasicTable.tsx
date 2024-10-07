@@ -4,6 +4,7 @@
 import React, { useMemo } from 'react';
 import { useTable, useSortBy, Column, HeaderGroup, Row, Cell, useGlobalFilter, ColumnInstance } from 'react-table';
 import { COLUMNS } from './columns'; 
+import { useRouter } from "next/navigation";
 import useFetchArticles from './fetchArticles'; 
 import styles from './table.module.scss';  
 import { TableFilter } from './TableFilter';
@@ -20,11 +21,25 @@ interface Article {
   evidence: string;
 }
 
+
+
+
+
 export const BasicTable: React.FC = () => {
-    // Use type assertion to avoid errors if `useFetchArticles` returns an unexpected type.
+    const navigate = useRouter();
+
+    const onDeleteClick = (id: string) => {
+        fetch(`http://localhost:8082/api/articles/${id}`, { method: "DELETE" })
+          .then(() => navigate.push("/admin"))
+          .catch((err) =>
+            console.log("Error from ShowArticleDetails_deleteClick: " + err + " ID: " + id)
+          );
+      };
+    
+    
     const articles = useFetchArticles() as Article[];
 
-    // Memoize columns and data to optimize performance
+    
     const columns = useMemo<Column<Article>[]>(() => COLUMNS, []);
     const data = useMemo<Article[]>(() => articles, [articles]);
 
@@ -61,7 +76,6 @@ export const BasicTable: React.FC = () => {
                                     <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column.id}>
                                         {column.render('Header')}
                                         <span>
-                                            {/* Suppress TypeScript error for isSorted */}
                                             {/* @ts-ignore */}
                                             {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
                                         </span>
@@ -80,9 +94,11 @@ export const BasicTable: React.FC = () => {
                                         return (
                                             <td {...cell.getCellProps()} key={cell.row.id}>
                                                 {cell.render('Cell')}
+                                                
                                             </td>
                                         );
                                     })}
+                                    <button onClick={() => onDeleteClick(row.original.id)}>Delete</button>
                                 </tr>
                             );
                         })}

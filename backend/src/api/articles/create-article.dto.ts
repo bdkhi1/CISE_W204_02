@@ -2,10 +2,11 @@ import { Date } from 'mongoose';
 
 export class CreateArticleDto {
   title: string;
-  isbn: string;
-  author: string;
-  description: string;
-  published_date: Date;
-  publisher: string;
+  authors: string;
+  source: string;
+  doi: string;
+  pubyear: Date;
+  claim: string;
+  evidence: string;
   updated_date: Date;
 }
