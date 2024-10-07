@@ -157,6 +157,7 @@ const CreateArticleComponent = () => {
                   placeholder="DOI"
                   name="doi"
                   className="form-control"
+<<<<<<< Updated upstream
                   value={article.isbn}
                   onChange={onChange}
                 />
@@ -195,6 +196,12 @@ const CreateArticleComponent = () => {
                   name="published_date"
                   className="form-control"
                   value={article.published_date?.toString()}
+=======
+                  placeholder="Published Date"
+                  name="pubyear"
+                  className="form-control"
+                  value={article.pubyear ? article.pubyear.toString().split('T')[0] : ''} // Format date for input
+>>>>>>> Stashed changes
                   onChange={onChange}
                 />
               </div>
