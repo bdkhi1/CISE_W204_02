@@ -1,14 +1,23 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+<<<<<<< Updated upstream
 import Link from "next/link";
 import { Article, DefaultEmptyArticle } from "./Article";
+=======
+import { Article, DefaultEmptyArticle } from "./Article";
+import './CreateArticle.module.scss';
+import Link from "next/link";
+import PopulatedNavBar from "./PopulatedNavBar";
+import './CreateArticle.module.scss';
+>>>>>>> Stashed changes
 
 const CreateArticleComponent = () => {
   const navigate = useRouter();
 
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
-
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const [authors, setAuthors] = useState<string[]>([]);
+  
+  const onChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setArticle({ ...article, [event.target.name]: event.target.value });
   };
 
@@ -17,14 +26,43 @@ const CreateArticleComponent = () => {
     console.log(article);
     fetch("http://localhost:8082/api/articles", {method: 'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(article)})
       .then((res) => {
-        console.log(res);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`); // Handle HTTP errors
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data); // Log the response from the server
         setArticle(DefaultEmptyArticle);
         // Push to /
+        setAuthors([]); // Clear authors on submit
         navigate.push("/");
       })
       .catch((err) => {
         console.log('Error from CreateArticle: ' + err);
       });
+  };
+
+  const claims = [
+    "Agile methodologies enhance team collaboration.",
+    "Code reviews improve code quality.",
+    "Test-driven development reduces bugs.",
+    "Continuous integration leads to faster delivery.",
+    "Pair programming increases productivity.",
+  ];
+
+  const addAuthor = () => {
+    setAuthors([...authors, ""]); 
+  };
+
+  const removeAuthor = (index: number) => {
+    setAuthors(authors.filter((_, i) => i !== index)); // Remove the author at the given index
+  };
+
+  const changeAuthor = (index: number, value: string) => {
+    setAuthors(
+      authors.map((oldValue, i) => (index === i ? value : oldValue))
+    );
   };
 
   return (
