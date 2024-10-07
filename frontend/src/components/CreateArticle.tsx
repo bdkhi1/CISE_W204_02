@@ -119,7 +119,38 @@ const CreateArticleComponent = () => {
                   onChange={onChange}
                 />
               </div>
+<<<<<<< Updated upstream
               <br />
+=======
+
+              {authors.map((author, index) => (
+                <div key={`author-${index}`} className="form-group d-flex align-items-center mb-3">
+                  <input
+                    type="text"
+                    placeholder="Author Name"
+                    value={author}
+                    onChange={(event) => changeAuthor(index, event.target.value)}
+                    className="form-control"
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-danger ms-2"
+                    onClick={() => removeAuthor(index)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                className="btn btn-outline-info mb-3"
+                onClick={addAuthor}
+              >
+                Add Author
+              </button>
+
+>>>>>>> Stashed changes
               <div className="form-group">
                 <input
                   type="text"
