@@ -22,9 +22,28 @@ const CreateArticleComponent = () => {
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+<<<<<<< Updated upstream
     event.preventDefault()
     console.log(article);
     fetch("http://localhost:8082/api/articles", {method: 'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(article)})
+=======
+    event.preventDefault();
+
+    // Prepare the article object
+    const articleToSubmit = {
+      ...article,
+      authors: authors.join(', '), // Join authors into a string
+      pubyear: new Date(article.pubyear), // Convert pubyear to Date
+      updated_date: new Date(), // Set updated_date to current date
+    };
+
+    console.log("Submitting article:", articleToSubmit); // Log the article object
+    fetch("http://localhost:8082/api/articles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(articleToSubmit),
+    })
+>>>>>>> Stashed changes
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`); // Handle HTTP errors
@@ -34,8 +53,11 @@ const CreateArticleComponent = () => {
       .then((data) => {
         console.log(data); // Log the response from the server
         setArticle(DefaultEmptyArticle);
+<<<<<<< Updated upstream
         // Push to /
+=======
         setAuthors([]); // Clear authors on submit
+>>>>>>> Stashed changes
         navigate.push("/");
       })
       .catch((err) => {
@@ -66,7 +88,15 @@ const CreateArticleComponent = () => {
   };
 
   return (
+<<<<<<< Updated upstream
     <div className="CreateArticle">
+=======
+    <div>
+      <PopulatedNavBar />
+    
+    <div className="CreateArticle py-5">
+      
+>>>>>>> Stashed changes
       <div className="container">
         <div className="row">
           <div className="col-md-8 m-auto">
