@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Article, DefaultEmptyArticle } from "./Article";
-import './CreateArticle.module.scss';
 import Link from "next/link";
 import PopulatedNavBar from "./PopulatedNavBar";
 
@@ -49,12 +48,11 @@ const CreateArticleComponent = () => {
       });
   };
 
-  const claims = [
-    "Agile methodologies enhance team collaboration.",
-    "Code reviews improve code quality.",
-    "Test-driven development reduces bugs.",
-    "Continuous integration leads to faster delivery.",
-    "Pair programming increases productivity.",
+  const practices = [
+    "Code Review",
+    "Test-driven development",
+    "Continuous integration",
+    "Pair programming",
   ];
 
   const addAuthor = () => {
@@ -138,17 +136,6 @@ const CreateArticleComponent = () => {
                 <br />
                 <div className="form-group">
                   <input
-                    type="text"
-                    placeholder="Describe this article"
-                    name="evidence"
-                    className="form-control"
-                    value={article.description}
-                    onChange={onChange}
-                  />
-                </div>
-                <br />
-                <div className="form-group">
-                  <input
                     type="date"
                     placeholder="Published Date"
                     name="pubyear"
@@ -164,20 +151,20 @@ const CreateArticleComponent = () => {
                     placeholder="Publisher of this Article"
                     name="source"
                     className="form-control"
-                    value={article.publisher}
+                    value={article.source}
                     onChange={onChange}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="claim">Select Claim</label>
+                  <label htmlFor="claim">Select Software Engineering Practice</label>
                   <select
                     name="claim"
                     className="form-control"
                     value={article.claim}
                     onChange={onChange}
                   >
-                    <option value="" disabled>Select a claim</option>
-                    {claims.map((claim, index) => (
+                    <option value="" disabled>Select Practice</option>
+                    {practices.map((claim, index) => (
                       <option key={index} value={claim}>
                         {claim}
                       </option>
