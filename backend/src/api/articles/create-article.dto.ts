@@ -6,7 +6,6 @@ export class CreateArticleDto {
   source: string;
   doi: string;
   pubyear: Date;
-  claim: string;
-  evidence: string;
+  practice: string;
   updated_date: Date;
 }

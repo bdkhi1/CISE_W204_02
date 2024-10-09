@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Date, HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
-export type ArticleDocument = HydratedDocument<Article>;
+export type ModerationDocument = HydratedDocument<Moderation>;
 
 @Schema()
-export class Article {
+export class Moderation {
   @Prop({ required: true })
   title: string;
 
@@ -21,10 +21,13 @@ export class Article {
   pubyear: Date;
 
   @Prop()
-  practice: string;
-  
+  claim: string;
+
+  @Prop()
+  evidence: string;
+
   @Prop({ type: Date, default: Date.now })
-  updated_date: Date;
+  created_date: Date; 
 }
 
-export const ArticleSchema = SchemaFactory.createForClass(Article);
+export const ModerationSchema = SchemaFactory.createForClass(Moderation);
