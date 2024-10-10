@@ -21,10 +21,7 @@ export class Moderation {
   pubyear: Date;
 
   @Prop()
-  claim: string;
-
-  @Prop()
-  evidence: string;
+  practice: string;
 
   @Prop({ type: Date, default: Date.now })
   created_date: Date; 
