@@ -9,8 +9,7 @@ interface Article {
     source: string;
     pubyear: string;
     doi: string;
-    claim: string;
-    evidence: string;
+    practice: string;
 }
 
 // Define columns with action handlers included
@@ -40,11 +39,7 @@ export const COLUMNS: Column<Article>[] = [
         accessor: 'doi',
     },
     {
-        Header: 'Claim',
-        accessor: 'claim',
-    },
-    {
-        Header: 'Evidence Level',
-        accessor: 'evidence',
+        Header: 'Practice',
+        accessor: 'practice',
     },
 ];

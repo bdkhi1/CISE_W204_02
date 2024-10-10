@@ -17,13 +17,8 @@ interface Article {
   source: string;
   pubyear: string;
   doi: string;
-  claim: string;
-  evidence: string;
+  practice: string;
 }
-
-
-
-
 
 export const BasicTable: React.FC = () => {
     const navigate = useRouter();
@@ -34,14 +29,14 @@ export const BasicTable: React.FC = () => {
           .catch((err) =>
             console.log("Error from ShowArticleDetails_deleteClick: " + err + " ID: " + id)
           );
-      };
-    
-    
-    const articles = useFetchArticles() as Article[];
+    };
 
-    
+    const articles = useFetchArticles(); 
+
     const columns = useMemo<Column<Article>[]>(() => COLUMNS, []);
-    const data = useMemo<Article[]>(() => articles, [articles]);
+    const data = useMemo<Article[]>(() => {
+        return Array.isArray(articles) ? articles : [];
+    }, [articles]);
 
     // @ts-ignore - Ignore TypeScript error for setGlobalFilter
     const {
@@ -57,7 +52,7 @@ export const BasicTable: React.FC = () => {
     } = useTable({
         columns,
         data
-    }, useGlobalFilter, useSortBy); 
+    }, useGlobalFilter, useSortBy);
 
     // @ts-ignore - Ignore TypeScript error for globalFilter
     const { globalFilter } = state;
@@ -94,7 +89,6 @@ export const BasicTable: React.FC = () => {
                                         return (
                                             <td {...cell.getCellProps()} key={cell.row.id}>
                                                 {cell.render('Cell')}
-                                                
                                             </td>
                                         );
                                     })}
