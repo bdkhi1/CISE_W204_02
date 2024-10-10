@@ -20,9 +20,9 @@ const CreateArticleComponent = () => {
     // Prepare the article object
     const articleToSubmit = {
       ...article,
-      authors: authors.join(', '), // Join authors into a string
-      pubyear: new Date(article.pubyear), // Convert pubyear to Date
-      updated_date: new Date(), // Set updated_date to current date
+      authors: authors.join(', '), 
+      pubyear: new Date(article.pubyear), 
+      updated_date: new Date(), 
     };
 
     console.log("Submitting article:", articleToSubmit); 
