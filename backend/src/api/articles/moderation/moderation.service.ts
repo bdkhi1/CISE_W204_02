@@ -10,6 +10,14 @@ export class ModerationService {
     @InjectModel(Moderation.name) private moderationModel: Model<Moderation>,
   ) {}
 
+  async findAll(): Promise<Moderation[]> {
+    return await this.moderationModel.find().exec();
+  }
+  
+  async findOne(id: string): Promise<Moderation> {
+    return await this.moderationModel.findById(id).exec();
+  }
+
   async create(createArticleDto: CreateArticleDto) {
     return await this.moderationModel.create(createArticleDto);
   }
