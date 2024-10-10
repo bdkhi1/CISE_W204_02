@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { AdministrationService } from './administration.service';
 import { CreateArticleDto } from '../article/create-article.dto';
 
@@ -19,6 +19,23 @@ export class AdministrationController {
           error: 'Unable to send this article to administration',
         },
         HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Get('/')
+  async getAllAdministrationArticles() {
+    try {
+      const articles = await this.administrationService.findAll();
+      return articles;
+    } catch (error) {
+      console.error('Error fetching administration articles:', error);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Unable to fetch administration articles',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
