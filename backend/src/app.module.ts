@@ -5,7 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ArticleModule } from './api/articles/article/article.module';
 import { ConfigModule } from '@nestjs/config';
 import { ModerationModule } from './api/articles/moderation/moderation.module';
-import { AdministrationModule } from './api/articles/administration/administration.module'; 
+import { AdministrationModule } from './api/articles/administration/administration.module';
+import { AnalystModule } from './api/articles/analyst/analyst.module'; 
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { AdministrationModule } from './api/articles/administration/administrati
     MongooseModule.forRoot(process.env.DB_URI),
     ArticleModule,
     ModerationModule,
-    AdministrationModule 
+    AdministrationModule,
+    AnalystModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
