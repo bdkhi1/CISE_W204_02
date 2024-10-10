@@ -14,7 +14,7 @@ export class Administration {
     @Prop({ required: true })
     source: string;
   
-    @Prop()
+    @Prop({ required: true})
     doi: string;
   
     @Prop({ type: Date })

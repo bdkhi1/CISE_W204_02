@@ -8,6 +8,7 @@ export type Article = {
     doi?: string;
     claim?: string;
     evidence?: string;
+    practice?: string;
 };
 
 export const DefaultEmptyArticle: Article = {
@@ -20,4 +21,5 @@ export const DefaultEmptyArticle: Article = {
     doi: '',        
     claim: '',      
     evidence: '',   
+    practice: ''
 };

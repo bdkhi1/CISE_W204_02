@@ -10,8 +10,20 @@ const CreateArticleComponent = () => {
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
   const [authors, setAuthors] = useState<string[]>([]);
 
-  const onChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  // Common Software Engineering practices
+  const practices = [
+    "Agile Development",
+    "Continuous Integration",
+    "Test-Driven Development",
+    "Code Review",
+  ];
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setArticle({ ...article, [event.target.name]: event.target.value });
+  };
+
+  const handlePracticeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setArticle({ ...article, practice: event.target.value });
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -26,7 +38,7 @@ const CreateArticleComponent = () => {
     };
 
     console.log("Submitting article:", articleToSubmit); 
-    fetch("http://localhost:8082/api/moderation", {
+    fetch("http://localhost:8082/api/administration", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(articleToSubmit),
@@ -48,19 +60,12 @@ const CreateArticleComponent = () => {
       });
   };
 
-  const practices = [
-    "Code Review",
-    "Test-driven development",
-    "Continuous integration",
-    "Pair programming",
-  ];
-
   const addAuthor = () => {
     setAuthors([...authors, ""]);
   };
 
   const removeAuthor = (index: number) => {
-    setAuthors(authors.filter((_, i) => i !== index)); // Remove the author at the given index
+    setAuthors(authors.filter((_, i) => i !== index)); 
   };
 
   const changeAuthor = (index: number, value: string) => {
@@ -140,7 +145,7 @@ const CreateArticleComponent = () => {
                     placeholder="Published Date"
                     name="pubyear"
                     className="form-control"
-                    value={article.pubyear ? article.pubyear.toString().split('T')[0] : ''} // Format date for input
+                    value={article.pubyear ? article.pubyear.toString().split('T')[0] : ''} 
                     onChange={onChange}
                   />
                 </div>
@@ -155,22 +160,24 @@ const CreateArticleComponent = () => {
                     onChange={onChange}
                   />
                 </div>
+
                 <div className="form-group">
-                  <label htmlFor="claim">Select Software Engineering Practice</label>
+                  <label htmlFor="practice">Select Software Engineering Practice</label>
                   <select
-                    name="claim"
+                    name="practice"
                     className="form-control"
-                    value={article.claim}
-                    onChange={onChange}
+                    value={article.practice}
+                    onChange={handlePracticeChange}
                   >
-                    <option value="" disabled>Select Practice</option>
-                    {practices.map((claim, index) => (
-                      <option key={index} value={claim}>
-                        {claim}
+                    <option value="">Select a practice</option>
+                    {practices.map((practice, index) => (
+                      <option key={index} value={practice}>
+                        {practice}
                       </option>
                     ))}
                   </select>
                 </div>
+
                 <button
                   type="submit"
                   className="btn btn-outline-warning btn-block mt-4 mb-4 w-100"
