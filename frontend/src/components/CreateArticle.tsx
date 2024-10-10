@@ -20,27 +20,27 @@ const CreateArticleComponent = () => {
     // Prepare the article object
     const articleToSubmit = {
       ...article,
-      authors: authors.join(', '), // Join authors into a string
-      pubyear: new Date(article.pubyear), // Convert pubyear to Date
-      updated_date: new Date(), // Set updated_date to current date
+      authors: authors.join(', '), 
+      pubyear: new Date(article.pubyear), 
+      updated_date: new Date(), 
     };
 
-    console.log("Submitting article:", articleToSubmit); // Log the article object
-    fetch("http://localhost:8082/api/articles", {
+    console.log("Submitting article:", articleToSubmit); 
+    fetch("http://localhost:8082/api/moderation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(articleToSubmit),
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`); // Handle HTTP errors
+          throw new Error(`HTTP error! status: ${res.status}`); 
         }
         return res.json();
       })
       .then((data) => {
-        console.log(data); // Log the response from the server
+        console.log(data); 
         setArticle(DefaultEmptyArticle);
-        setAuthors([]); // Clear authors on submit
+        setAuthors([]); 
         navigate.push("/");
       })
       .catch((err) => {
