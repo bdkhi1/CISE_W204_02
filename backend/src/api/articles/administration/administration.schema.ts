@@ -5,20 +5,26 @@ export type AdministrationDocument = HydratedDocument<Administration>;
 
 @Schema()
 export class Administration {
-  @Prop({ required: true })
-  title: string;
-
-  @Prop({ required: true })
-  description: string;
-
-  @Prop({ required: true })
-  author: string;
-
-  @Prop({ type: Date, default: Date.now })
-  created_date: Date;
-
-  @Prop({ type: Date })
-  updated_date: Date;
+    @Prop({ required: true })
+    title: string;
+  
+    @Prop({ required: true })
+    authors: string;
+  
+    @Prop({ required: true })
+    source: string;
+  
+    @Prop()
+    doi: string;
+  
+    @Prop({ type: Date })
+    pubyear: Date;
+  
+    @Prop()
+    practice: string;
+    
+    @Prop({ type: Date, default: Date.now })
+    updated_date: Date;
 }
 
 export const AdministrationSchema = SchemaFactory.createForClass(Administration);

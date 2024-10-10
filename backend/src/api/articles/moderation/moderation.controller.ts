@@ -1,6 +1,6 @@
 import { Body, Controller, Post, HttpException, HttpStatus } from '@nestjs/common';
 import { ModerationService } from './moderation.service';
-import { CreateArticleDto } from '../create-article.dto';
+import { CreateArticleDto } from '../article/create-article.dto';
 
 @Controller('api/moderation') 
 export class ModerationController {

@@ -1,6 +1,6 @@
 import { Body, Controller, Post, HttpException, HttpStatus } from '@nestjs/common';
 import { AdministrationService } from './administration.service';
-import { CreateArticleDto } from '../create-article.dto';
+import { CreateArticleDto } from '../article/create-article.dto';
 
 @Controller('api/administration') 
 export class AdministrationController {
