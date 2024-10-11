@@ -1,105 +1,170 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import React, { useMemo } from 'react';
-import { useTable, useSortBy, Column, HeaderGroup, Row, Cell, useGlobalFilter, ColumnInstance } from 'react-table';
+import React, { useState, useMemo } from 'react'; 
+import { useTable, useSortBy, usePagination, useColumnOrder, useGlobalFilter } from 'react-table';
 import { COLUMNS } from './columns'; 
-import { useRouter } from "next/navigation";
-import useFetchArticles from './fetchArticles'; 
-import styles from './table.module.scss';  
-import { TableFilter } from './TableFilter';
-
-// The data type for the article that is to be manipulated for the table.
-interface Article {
-  id: string;
-  title: string;
-  authors: string;
-  source: string;
-  pubyear: string;
-  doi: string;
-  practice: string;
-}
+import useFetchArticles from './fetchArticles';
+import styles from './table.module.scss';
 
 export const BasicTable: React.FC = () => {
-    const navigate = useRouter();
+    // Fetch articles and manage search term state
+    const articles = useFetchArticles();
+    const [searchTerm, setSearchTerm] = useState('');
 
-    const onDeleteClick = (id: string) => {
-        fetch(`http://localhost:8082/api/articles/${id}`, { method: "DELETE" })
-          .then(() => navigate.push("/admin"))
-          .catch((err) =>
-            console.log("Error from ShowArticleDetails_deleteClick: " + err + " ID: " + id)
-          );
-    };
+    // Define columns, ensuring the publication year is displayed correctly
+    const columns = useMemo(() => [
+        ...COLUMNS.map(column => {
+            if (column.accessor === 'pubyear') {
+                return {
+                    ...column,
+                   
+                    Cell: ({ value }) => value ? new Date(value).getFullYear() : ''
+                };
+            }
+            return column; 
+        }),
+        {
+            Header: 'Actions', 
+            id: 'actions',
+            // Render buttons for edit and delete actions
+            Cell: ({ row }) => (
+                <div className={styles.actionButtons}>
+                    <button className={styles.editButton}>
+                        ✏️ Edit
+                    </button>
+                    <button className={styles.deleteButton}>
+                        🗑️ Delete
+                    </button>
+                </div>
+            ),
+        },
+    ], []);
 
-    const articles = useFetchArticles(); 
+    const data = useMemo(() => Array.isArray(articles) ? articles : [], [articles]);
 
-    const columns = useMemo<Column<Article>[]>(() => COLUMNS, []);
-    const data = useMemo<Article[]>(() => {
-        return Array.isArray(articles) ? articles : [];
-    }, [articles]);
-
-    // @ts-ignore - Ignore TypeScript error for setGlobalFilter
+    // Set up the table with hooks
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        footerGroups,
-        rows,
+        // @ts-expect-error
+        page,
+        // @ts-expect-error
+        nextPage,
+        // @ts-expect-error
+        previousPage,
+        // @ts-expect-error
+        canNextPage,
+        // @ts-expect-error
+        canPreviousPage,
         prepareRow,
-        state,
-        // @ts-ignore - Ignore TypeScript error for setGlobalFilter
+        allColumns,
+        // @ts-expect-error
         setGlobalFilter,
-    } = useTable({
-        columns,
-        data
-    }, useGlobalFilter, useSortBy);
+        // @ts-expect-error
+        state: { pageIndex },
+    } = useTable(
+        {
+            columns,
+            data,
+            // @ts-expect-error
+            initialState: { pageIndex: 0, pageSize: 10 }
+        },
+        useGlobalFilter,
+        useSortBy,
+        usePagination,
+        useColumnOrder
+    );
 
-    // @ts-ignore - Ignore TypeScript error for globalFilter
-    const { globalFilter } = state;
+    // Handle search input and filter the table
+    const handleSearch = (e) => {
+        const value = e.target.value; 
+        setSearchTerm(value); 
+        setGlobalFilter(value || undefined); 
+    };
+
+    // Toggle column visibility based on user selection
+    const toggleColumnVisibility = (columnId) => {
+        const column = allColumns.find(col => col.id === columnId);
+        if (column) {
+            column.toggleHidden();
+        }
+    };
 
     return (
-        <>
-            <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
+        <div className={styles.tableWrapper}>
+            {/* Search bar for filtering articles */}
+            <div className={styles.searchBar}>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearch} 
+                    placeholder="Search..."
+                    className={styles.searchInput}
+                />
+            </div>
+            
+            {/* Column visibility toggles */}
+            <div className={styles.columnTogglesContainer}>
+                <div className={styles.columnToggles}>
+                    <div className={styles.columnList}>
+                        {allColumns.map(column => (
+                            <button 
+                                key={column.id} 
+                                className={styles.toggleButton}
+                                onClick={() => toggleColumnVisibility(column.id)} 
+                            >
+                                {/*@ts-expect-error*/}
+                                {column.isVisible ? 'Hide' : 'Show'} {column.Header}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Table rendering */}
             <div className={styles.tableContainer}>
-                <table {...getTableProps()} className={styles.darkThemeTable}>
+                <table {...getTableProps()} className={styles.table}>
                     <thead>
-                        {/* Headers for the table */}
-                        {headerGroups.map((headerGroup: HeaderGroup<Article>) => (
-                            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-                                {headerGroup.headers.map((column: ColumnInstance<Article>) => (
-                                    // @ts-ignore - Ignore TypeScript error for getSortByToggleProps
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column.id}>
+                        {headerGroups.map(headerGroup => (
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                                {headerGroup.headers.map(column => (
+                                    // @ts-expect-error
+                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                         {column.render('Header')}
-                                        <span>
-                                            {/* @ts-ignore */}
-                                            {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
+                                        <span className={styles.sortIcon}>
+                                            {/*@ts-expect-error*/}
+                                            {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''} 
                                         </span>
                                     </th>
                                 ))}
                             </tr>
                         ))}
                     </thead>
-                    {/* Contents of the body for each of the columns */}
                     <tbody {...getTableBodyProps()}>
-                        {rows.map((row: Row<Article>) => {
-                            prepareRow(row);
+                        {page.map(row => {
+                            prepareRow(row); // Prepare the rows for rendering
                             return (
-                                <tr {...row.getRowProps()} key={row.id}>
-                                    {row.cells.map((cell: Cell<Article>) => {
-                                        return (
-                                            <td {...cell.getCellProps()} key={cell.row.id}>
-                                                {cell.render('Cell')}
-                                            </td>
-                                        );
-                                    })}
-                                    <button onClick={() => onDeleteClick(row.original.id)}>Delete</button>
+                                <tr {...row.getRowProps()}>
+                                    {row.cells.map(cell => (
+                                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                    ))}
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
             </div>
-        </>
+
+            {/* Pagination controls */}
+            <div className={styles.pagination}>
+                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                    Previous
+                </button>
+                <span>Page {pageIndex + 1}</span>
+                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                    Next
+                </button>
+            </div>
+        </div>
     );
 };
 
