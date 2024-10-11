@@ -29,7 +29,7 @@ function ShowArticleList() {
       const filtered = articles.filter(
         (article) =>
           article.title?.toLowerCase().includes(query.toLowerCase()) ||
-          article?.description?.toLowerCase().includes(query.toLowerCase())
+          article?.practice?.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredArticles(filtered);
     }
