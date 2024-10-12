@@ -9,6 +9,7 @@ const CreateArticleComponent = () => {
 
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
   const [authors, setAuthors] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Common Software Engineering practices
   const practices = [
@@ -26,37 +27,51 @@ const CreateArticleComponent = () => {
     setArticle({ ...article, practice: event.target.value });
   };
 
+  const validateForm = () => {
+    if (!article.title || authors.length === 0 || !article.pubyear || !article.source || !article.practice) {
+      return "Please fill in all required fields.";
+    }
+    return null;
+  };
+
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    const validationError = validateForm();
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+    setErrorMessage(null);
 
-    // Prepare the article object
     const articleToSubmit = {
       ...article,
-      authors: authors.join(', '), 
-      pubyear: new Date(article.pubyear), 
-      updated_date: new Date(), 
+      authors: authors.join(', '),
+      pubyear: new Date(article.pubyear).toISOString(), // Using ISO format for consistency
+      updated_date: new Date().toISOString(),
     };
 
-    console.log("Submitting article:", articleToSubmit); 
-    fetch("http://localhost:8082/api/moderation", {
+    console.log("Submitting article:", articleToSubmit);
+    fetch("http://localhost:8082/api/administration", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(articleToSubmit),
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`); 
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
         return res.json();
       })
       .then((data) => {
-        console.log(data); 
+        console.log(data);
         setArticle(DefaultEmptyArticle);
-        setAuthors([]); 
+        setAuthors([]);
         navigate.push("/");
       })
       .catch((err) => {
-        console.log('Error from CreateArticle: ' + err);
+        console.error('Error from CreateArticle: ', err);
+        setErrorMessage("An error occurred while submitting the article. Please try again.");
       });
   };
 
@@ -65,7 +80,7 @@ const CreateArticleComponent = () => {
   };
 
   const removeAuthor = (index: number) => {
-    setAuthors(authors.filter((_, i) => i !== index)); 
+    setAuthors(authors.filter((_, i) => i !== index));
   };
 
   const changeAuthor = (index: number, value: string) => {
@@ -81,15 +96,19 @@ const CreateArticleComponent = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <br />
-              <Link href="/" className="btn btn-outline-warning float-left">
+              <Link href="/" className="btn btn-outline-warning float-left mb-3">
                 Show Article List
               </Link>
             </div>
             <div className="col-md-10 m-auto">
-              <h1 className="display-4 text-center">Add Article</h1>
-              <p className="lead text-center">Create new article</p>
-              <form noValidate onSubmit={onSubmit}>
+              <h1 className="display-4 text-center title">Add Article</h1>
+              <p className="lead text-center description">Create a new article</p>
+
+              {/* Error message display */}
+              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
+              <form noValidate onSubmit={onSubmit} className="form-container">
+
                 <div className="form-group">
                   <input
                     type="text"
@@ -98,6 +117,7 @@ const CreateArticleComponent = () => {
                     className="form-control"
                     value={article.title}
                     onChange={onChange}
+                    required
                   />
                 </div>
 
@@ -109,6 +129,7 @@ const CreateArticleComponent = () => {
                       value={author}
                       onChange={(event) => changeAuthor(index, event.target.value)}
                       className="form-control"
+                      required
                     />
                     <button
                       type="button"
@@ -138,18 +159,19 @@ const CreateArticleComponent = () => {
                     onChange={onChange}
                   />
                 </div>
-                <br />
+
                 <div className="form-group">
                   <input
                     type="date"
                     placeholder="Published Date"
                     name="pubyear"
                     className="form-control"
-                    value={article.pubyear ? article.pubyear.toString().split('T')[0] : ''} 
+                    value={article.pubyear ? article.pubyear.toString().split('T')[0] : ''}
                     onChange={onChange}
+                    required
                   />
                 </div>
-                <br />
+
                 <div className="form-group">
                   <input
                     type="text"
@@ -158,6 +180,7 @@ const CreateArticleComponent = () => {
                     className="form-control"
                     value={article.source}
                     onChange={onChange}
+                    required
                   />
                 </div>
 
@@ -168,6 +191,7 @@ const CreateArticleComponent = () => {
                     className="form-control"
                     value={article.practice}
                     onChange={handlePracticeChange}
+                    required
                   >
                     <option value="">Select a practice</option>
                     {practices.map((practice, index) => (
