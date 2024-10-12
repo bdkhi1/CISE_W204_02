@@ -1,8 +1,8 @@
-import { Body, Controller, Post, Get, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, Get, Delete, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { AdministrationService } from './administration.service';
 import { CreateArticleDto } from '../article/create-article.dto';
 
-@Controller('api/administration') 
+@Controller('api/administration')
 export class AdministrationController {
   constructor(private readonly administrationService: AdministrationService) {}
 
@@ -36,6 +36,22 @@ export class AdministrationController {
           error: 'Unable to fetch administration articles',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Delete('/:id')
+  async deleteArticle(@Param('id') id: string) {
+    try {
+      return await this.administrationService.delete(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'No such article',
+        },
+        HttpStatus.NOT_FOUND,
+        { cause: error },
       );
     }
   }
