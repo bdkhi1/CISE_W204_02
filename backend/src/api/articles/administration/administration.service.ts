@@ -13,7 +13,13 @@ export class AdministrationService {
   async create(createAdministrationDto: CreateArticleDto) {
     return await this.administrationModel.create(createAdministrationDto);
   }
+
   async findAll(): Promise<Administration[]> {
     return await this.administrationModel.find().exec();
+  }
+
+  async delete(id: string) {
+    const deletedArticle = await this.administrationModel.findByIdAndDelete(id).exec();
+    return deletedArticle;
   }
 }
