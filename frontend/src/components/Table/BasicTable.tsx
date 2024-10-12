@@ -1,15 +1,38 @@
-import React, { useState, useMemo } from 'react'; 
+
+import React, { useState, useMemo, useEffect } from 'react'; 
 import { useTable, useSortBy, usePagination, useColumnOrder, useGlobalFilter } from 'react-table';
 import { COLUMNS } from './columns'; 
 import useFetchArticles from './fetchArticles';
 import styles from './table.module.scss';
+import { useParams, useRouter } from "next/navigation";
 
 export const BasicTable: React.FC = () => {
-    // Fetch articles and manage search term state
-    const articles = useFetchArticles();
+    const fetchedArticles = useFetchArticles();
+    const [articles, setArticles] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const { id } = useParams<{ id: string }>();
+    const navigate = useRouter();
 
-    // Define columns, ensuring the publication year is displayed correctly
+    // Populate articles once they're fetched
+    useEffect(() => {
+        setArticles(fetchedArticles);
+    }, [fetchedArticles]);
+
+    const onDeleteClick = (id: string) => {
+        fetch(`http://localhost:8082/api/administration/${id}`, { method: "DELETE" })
+          .then((response) => {
+            if (response.ok) {
+              const updatedArticles = articles.filter(article => article._id !== id);
+              setArticles(updatedArticles); 
+            } else {
+              console.error("Failed to delete the article");
+            }
+          })
+          .catch((err) => console.log("Error from ShowArticleDetails_deleteClick: " + err));
+      };
+    
+
+    // Define columns so publication date is just a year
     const columns = useMemo(() => [
         ...COLUMNS.map(column => {
             if (column.accessor === 'pubyear') {
@@ -30,8 +53,11 @@ export const BasicTable: React.FC = () => {
                     <button className={styles.editButton}>
                         ✏️ Edit
                     </button>
-                    <button className={styles.deleteButton}>
-                        🗑️ Delete
+                    <button 
+                    className={styles.deleteButton} 
+                    onClick={() => onDeleteClick(row.original._id)} // Use _id instead of id
+                    >
+                    🗑️ Delete
                     </button>
                 </div>
             ),
