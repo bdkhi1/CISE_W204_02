@@ -19,7 +19,7 @@ export const BasicTable: React.FC = () => {
     }, [fetchedArticles]);
 
     const onDeleteClick = (id: string) => {
-        fetch(`http://localhost:8082/api/administration/${id}`, { method: "DELETE" })
+        fetch(`http://localhost:8082/api/analyst/${id}`, { method: "DELETE" })
           .then((response) => {
             if (response.ok) {
               const updatedArticles = articles.filter(article => article._id !== id);

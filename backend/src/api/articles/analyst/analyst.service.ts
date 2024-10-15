@@ -13,4 +13,12 @@ export class AnalystService {
   async create(createAnalystDto: CreateArticleDto) {
     return await this.analystModel.create(createAnalystDto);
   }
+  async findAll(): Promise<Analyst[]> {
+    return await this.analystModel.find().exec();
+  }
+
+  async delete(id: string) {
+    const deletedArticle = await this.analystModel.findByIdAndDelete(id).exec();
+    return deletedArticle;
+  }
 }
