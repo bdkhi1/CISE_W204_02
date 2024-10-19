@@ -5,12 +5,16 @@ import SearchBar from "./SearchBar";
 import ArticleModal from "./ArticleModal";
 import { Article } from "./Article";
 import styles from "./ShowArticleList.module.css";
+import ArticleFilter from "./ArticleFilter";
 
 function ShowArticleList() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPractice, setSelectedPractice] = useState("");
+  const [selectedClaim, setSelectedClaim] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8082/api/articles")
@@ -25,16 +29,41 @@ function ShowArticleList() {
   }, []);
 
   const handleSearch = (query: string) => {
-    if (query === "") {
-      setFilteredArticles(articles);
-    } else {
-      const filtered = articles.filter(
+    setSearchQuery(query);
+    filterArticles(query, selectedPractice, selectedClaim);
+  };
+
+  const handleFilterChange = (practice: string, claim: string) => {
+    setSelectedPractice(practice);
+    setSelectedClaim(claim);
+    filterArticles(searchQuery, practice, claim);
+  };
+
+  const filterArticles = (query: string, practice: string, claim: string) => {
+    let filtered = articles;
+
+    if (query) {
+      filtered = filtered.filter(
         (article) =>
           article.title?.toLowerCase().includes(query.toLowerCase()) ||
-          article?.practice?.toLowerCase().includes(query.toLowerCase())
+          article.practice?.toLowerCase().includes(query.toLowerCase()) ||
+          article.claim?.toLowerCase().includes(query.toLowerCase())
       );
-      setFilteredArticles(filtered);
     }
+
+    if (practice) {
+      filtered = filtered.filter(
+        (article) => article.practice?.toLowerCase() === practice.toLowerCase()
+      );
+    }
+
+    if (claim) {
+      filtered = filtered.filter(
+        (article) => article.claim?.toLowerCase() === claim.toLowerCase()
+      );
+    }
+
+    setFilteredArticles(filtered);
   };
 
   const handleArticleClick = (article: Article) => {
@@ -52,12 +81,12 @@ function ShowArticleList() {
 
         <div className={styles.controls}>
           <SearchBar onSearch={handleSearch} />
-          <Link
-            href="./create-article"
-            className={styles.addButton}
-          >
+          <Link href="./create-article" className={styles.addButton}>
             + Add New Article
           </Link>
+        </div>
+        <div className={styles.controls}>
+          <ArticleFilter onFilterChange={handleFilterChange} />
         </div>
 
         <div className={styles.list}>
@@ -65,9 +94,9 @@ function ShowArticleList() {
             <div className={styles.noArticles}>No articles found</div>
           ) : (
             filteredArticles.map((article, k) => (
-              <ArticleCard 
-                article={article} 
-                key={k} 
+              <ArticleCard
+                article={article}
+                key={k}
                 onClick={() => handleArticleClick(article)}
               />
             ))

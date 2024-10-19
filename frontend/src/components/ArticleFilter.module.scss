@@ -1,0 +1,49 @@
+.articleFilter {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.formSelect {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #f39c12;
+  /* Same border color as the button */
+  border-radius: 8px;
+  /* Same border radius as the button */
+  background-color: transparent;
+  /* Make the background transparent like the button */
+  color: #f39c12;
+  /* Text color matches the button */
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  /* Smooth transition for hover effect */
+}
+
+.formSelect:focus {
+  outline: none;
+  border-color: #f39c12;
+  /* Focus border color */
+  box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+  /* Slight glow effect */
+}
+
+.formSelect option {
+  color: #f39c12;
+  /* Option text color */
+  background-color: #333;
+  /* Option background color */
+}
+
+.formSelect:hover {
+  background-color: #f39c12;
+  /* Change background on hover like the button */
+  color: #333;
+  /* Change text color on hover */
+}
+
+.mt2 {
+  margin-top: 10px;
+}
