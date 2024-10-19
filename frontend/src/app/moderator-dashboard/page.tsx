@@ -1,9 +1,15 @@
-'use client'
+'use client';
 
-import ModeratorDashboardComponent from "@/components/ModeratorDashboard";
+import React from 'react';
+import ModeratorDashboard from "@/components/moderator/ModeratorDashboard";
+import styles from "@/components/dashboard.module.scss";
+import PopulatedNavBar from '@/components/PopulatedNavBar';
 
-export default function ModeratorDashboard() {
+export default function ModeratorPage() {
   return (
-    <ModeratorDashboardComponent />
-  )
+    <main className={styles.pageBackground}>
+      <PopulatedNavBar />
+      <ModeratorDashboard />
+    </main>
+  );
 }

@@ -52,7 +52,7 @@ const CreateArticleComponent = () => {
     };
 
     console.log("Submitting article:", articleToSubmit);
-    fetch("http://localhost:8082/api/analyst", {
+    fetch("http://localhost:8082/api/moderation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(articleToSubmit),

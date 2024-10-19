@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import ArticleCard from "./ArticleCard";
 import SearchBar from "./SearchBar";
+import ArticleModal from "./ArticleModal";
 import { Article } from "./Article";
+import styles from "./ShowArticleList.module.css";
 
 function ShowArticleList() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:8082/api/articles")
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((articles) => {
         setArticles(articles);
         setFilteredArticles(articles);
@@ -35,38 +37,50 @@ function ShowArticleList() {
     }
   };
 
-  const articleList =
-    filteredArticles.length === 0
-      ? "there is no article record!"
-      : filteredArticles.map((article, k) => (
-          <ArticleCard article={article} key={k} />
-        ));
+  const handleArticleClick = (article: Article) => {
+    setSelectedArticle(article);
+    setIsModalOpen(true);
+  };
 
   return (
-    <div className="ShowArticleList">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12">
-            <br />
-            <h2 className="display-4 text-center">Article List</h2>
-            <p className="lead text-center">View all articles</p>
-          </div>
+    <div className={styles.showArticleList}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Article List</h2>
+          <p className={styles.subtitle}>View all articles</p>
+        </div>
 
-          <div className="col-md-12 d-flex justify-content-between align-items-center">
-            <SearchBar onSearch={handleSearch} />
-            <Link
-              href="./create-article"
-              className="btn btn-outline-warning float-right"
-            >
-              + Add New Article
-            </Link>
-          </div>
+        <div className={styles.controls}>
+          <SearchBar onSearch={handleSearch} />
+          <Link
+            href="./create-article"
+            className={styles.addButton}
+          >
+            + Add New Article
+          </Link>
         </div>
-        <div className="col-md-12">
-          <br />
+
+        <div className={styles.list}>
+          {filteredArticles.length === 0 ? (
+            <div className={styles.noArticles}>No articles found</div>
+          ) : (
+            filteredArticles.map((article, k) => (
+              <ArticleCard 
+                article={article} 
+                key={k} 
+                onClick={() => handleArticleClick(article)}
+              />
+            ))
+          )}
         </div>
-        <div className="list">{articleList}</div>
       </div>
+
+      {isModalOpen && selectedArticle && (
+        <ArticleModal
+          article={selectedArticle}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

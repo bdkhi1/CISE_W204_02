@@ -96,7 +96,6 @@
 
 .tableContainer {
   flex-grow: 1;
-  overflow-x: auto; 
   overflow-y: auto;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -104,11 +103,9 @@
 
 .table {
   width: 100%;
-  min-width: 100%; 
   border-collapse: separate;
   border-spacing: 0;
   background-color: #333; 
-  table-layout: fixed; 
 
   th,
   td {
@@ -200,20 +197,20 @@
 }
 
 .editButton {
-  background-color: #2ecc71; 
+  background-color: #73d39b; 
   color: #fff;
 
   &:hover {
-    background-color: #27ae60;
+    background-color: #3b7f57;
   }
 }
 
 .deleteButton {
-  background-color: #e74c3c; 
+  background-color: #fb8d81; 
   color: #fff;
 
   &:hover {
-    background-color: #c0392b;
+    background-color: #9a4036;
   }
 }
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "../dashboard.module.scss";
-import AnalystTable from "./AnalystTable/AnalystTable"
+import ModeratorTable from "./ModeratorTable/ModeratorTable"
 const AnalystDashboard: React.FC = () => {
   return (
     <div className={styles.pageBackground}>
@@ -11,7 +11,7 @@ const AnalystDashboard: React.FC = () => {
         <p className={styles.dashboardDesc}>
           Approve or Reject Articles based on their relevance
         </p>
-        <AnalystTable />
+        <ModeratorTable />
       </div>
     </div>
   );

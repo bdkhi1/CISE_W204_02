@@ -21,4 +21,10 @@ export class AnalystService {
     const deletedArticle = await this.analystModel.findByIdAndDelete(id).exec();
     return deletedArticle;
   }
+  async update(id: string, createArticleDto: CreateArticleDto) {
+    return await this.analystModel.findByIdAndUpdate(id, createArticleDto).exec();
+  }
+  async findOne(id: string): Promise<Analyst> {
+    return await this.analystModel.findById(id).exec();
+  }
 }

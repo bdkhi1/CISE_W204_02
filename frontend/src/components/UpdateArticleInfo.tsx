@@ -1,150 +1,200 @@
-'use client';
-
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+// UpdateArticle.tsx
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Article, DefaultEmptyArticle } from './Article';
 import Link from 'next/link';
+import styles from './UpdateArticle.module.css';
 
-function UpdateArticleInfo() {
-  const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
+type Article = {
+  _id?: string;
+  title: string;
+  authors: string;
+  source: string;
+  pubyear: string;
+  doi: string;
+  practice: string;
+  claim: string;
+  evidence: string;
+};
+
+const defaultArticle: Article = {
+  title: '',
+  authors: '',
+  source: '',
+  pubyear: '',
+  doi: '',
+  practice: '',
+  claim: '',
+  evidence: ''
+};
+
+const practices = [
+  "Agile Development",
+  "Continuous Integration",
+  "Test-Driven Development",
+  "Code Review",
+];
+
+export default function UpdateArticleInfo() {
+  const [article, setArticle] = useState<Article>(defaultArticle);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
   useEffect(() => {
-    if (id) {
-      fetch(`http://localhost:8082/api/articles/${id}`)
-        .then((res) => res.json())
-        .then((json) => setArticle(json))
-        .catch((err) => console.log('Error from UpdateArticleInfo: ' + err));
-    }
+    const fetchArticle = async () => {
+      try {
+        const response = await fetch(`http://localhost:8082/api/analyst/${id}`);
+        if (!response.ok) throw new Error('Failed to fetch article');
+        const data = await response.json();
+        const formattedData = {
+          ...data,
+          pubyear: data.pubyear ? new Date(data.pubyear).toISOString().split('T')[0] : ''
+        };
+        setArticle(formattedData);
+      } catch (err) {
+        setError('Failed to load article. Please try again.');
+      }
+    };
+
+    if (id) fetchArticle();
   }, [id]);
 
-  const inputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setArticle({ ...article, [event.target.name]: event.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setArticle(prev => ({ ...prev, [name]: value }));
   };
 
-  const textAreaOnChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setArticle({ ...article, [event.target.name]: event.target.value });
+  const validateForm = () => {
+    const errors: string[] = [];
+    if (!article.title.trim()) errors.push('Title is required');
+    if (!article.authors.trim()) errors.push('Authors are required');
+    if (!article.claim.trim()) errors.push('Claim is required');
+    if (!article.evidence.trim()) errors.push('Evidence is required');
+    if (!article.pubyear) errors.push('Publication year is required');
+    return errors;
   };
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(false);
+    setIsSubmitting(true);
 
-    fetch(`http://localhost:8082/api/articles/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(article),
-    })
-      .then(() => router.push(`/show-article/${id}`))
-      .catch((err) => console.log('Error from UpdateArticleInfo: ' + err));
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      setError(validationErrors.join(', '));
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const articlesResponse = await fetch('http://localhost:8082/api/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...article,
+          pubyear: new Date(article.pubyear).toISOString(),
+          updated_date: new Date().toISOString()
+        }),
+      });
+
+      if (!articlesResponse.ok) throw new Error('Failed to submit to articles collection');
+
+      const deleteResponse = await fetch(`http://localhost:8082/api/analyst/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!deleteResponse.ok) throw new Error('Failed to delete from analyst collection');
+
+      setSuccess(true);
+      setTimeout(() => router.push('/'), 1000);
+    } catch (err) {
+      setError('Failed to process article. Please try again.');
+      console.error('Error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className='UpdateArticleInfo'>
-      <div className='container'>
-        <div className='row'>
-          <div className='col-md-8 m-auto'>
-            <br />
-            <Link href='/' className='btn btn-outline-warning float-left'>
-              Show Article List
-            </Link>
-          </div>
-          <div className='col-md-8 m-auto'>
-            <h1 className='display-4 text-center'>Edit Article</h1>
-            <p className='lead text-center'>Update Article&apos;s Info</p>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.formCard}>
+        <div className="mb-6">
+          <Link href="/analyst" className={styles.backButton}>
+            Back to Article List
+          </Link>
         </div>
 
-        <div className='col-md-8 m-auto'>
-          <form noValidate onSubmit={onSubmit}>
-            <div className='form-group'>
-              <label htmlFor='title'>Title</label>
-              <input
-                type='text'
-                placeholder='Title of the Article'
-                name='title'
-                className='form-control'
-                value={article.title}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='isbn'>Claim</label>
-              <input
-                type='text'
-                placeholder='ISBN'
-                name='isbn'
-                className='form-control'
-                value={article.claim}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='author'>Author</label>
-              <input
-                type='text'
-                placeholder='Author'
-                name='author'
-                className='form-control'
-                value={article.authors}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='description'>DOI</label>
-              <textarea
-                placeholder='Description of the Article'
-                name='description'
-                className='form-control'
-                value={article.doi}
-                onChange={textAreaOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='published_date'>Year of Publishing</label>
-              <input
-                type='text'
-                placeholder='Published Date'
-                name='published_date'
-                className='form-control'
-                value={article.pubyear?.toString()}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <div className='form-group'>
-              <label htmlFor='publisher'>Source</label>
-              <input
-                type='text'
-                placeholder='Publisher of the Article'
-                name='publisher'
-                className='form-control'
-                value={article.source}
-                onChange={inputOnChange}
-              />
-            </div>
-            <br />
-
-            <button
-              type='submit'
-              className='btn btn-outline-info btn-lg btn-block'
-            >
-              Update Article
-            </button>
-          </form>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Edit Article</h1>
+          <p className={styles.subtitle}>Update article information</p>
         </div>
+
+        {error && (
+          <div className={styles.errorMessage}>{error}</div>
+        )}
+
+        {success && (
+          <div className={styles.successMessage}>Article updated successfully!</div>
+        )}
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {['title', 'authors', 'source', 'doi', 'pubyear', 'practice', 'claim', 'evidence'].map((field) => (
+            <div key={field} className={styles.formGroup}>
+              <label htmlFor={field} className={styles.label}>
+                {field.charAt(0).toUpperCase() + field.slice(1)} {['title', 'authors', 'claim', 'evidence', 'pubyear'].includes(field) && '*'}
+              </label>
+              {field === 'evidence' ? (
+                <textarea
+                  id={field}
+                  name={field}
+                  value={article[field as keyof Article]}
+                  onChange={handleChange}
+                  className={styles.textarea}
+                  required={['title', 'authors', 'claim', 'evidence', 'pubyear'].includes(field)}
+                />
+              ) : field === 'practice' ? (
+                <select
+                  id={field}
+                  name={field}
+                  value={article[field]}
+                  onChange={handleChange}
+                  className={styles.select}
+                >
+                  <option value="">Select a practice</option>
+                  {practices.map((practice) => (
+                    <option key={practice} value={practice}>
+                      {practice}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={field === 'pubyear' ? 'date' : 'text'}
+                  id={field}
+                  name={field}
+                  value={article[field as keyof Article]}
+                  onChange={handleChange}
+                  className={styles.input}
+                  required={['title', 'authors', 'claim', 'evidence', 'pubyear'].includes(field)}
+                />
+              )}
+            </div>
+          ))}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={styles.submitButton}
+          >
+            {isSubmitting ? 'Updating...' : 'Update Article'}
+          </button>
+        </form>
       </div>
     </div>
   );
 }
-
-export default UpdateArticleInfo;

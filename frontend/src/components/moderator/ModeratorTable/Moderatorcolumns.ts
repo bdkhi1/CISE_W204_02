@@ -10,13 +10,14 @@ interface Article {
     pubyear: string;
     doi: string;
     practice: string;
-    evidence: string;
-    claim: string;
 }
 
 // Define columns with action handlers included
 export const COLUMNS: Column<Article>[] = [
-
+    {
+        Header: 'Id',
+        accessor: 'id', // Accessor is the "key" in the data
+    },
     {
         Header: 'Title',
         accessor: 'title',
@@ -40,13 +41,5 @@ export const COLUMNS: Column<Article>[] = [
     {
         Header: 'Practice',
         accessor: 'practice',
-    },
-    {
-        Header: 'Claim',
-        accessor: 'claim',
-    },
-    {
-        Header: 'Evidence',
-        accessor: 'evidence',
     },
 ];

@@ -7,25 +7,43 @@ import Link from "next/link";
 
 function ShowArticleDetails() {
   const [article, setArticle] = useState<Article>(DefaultEmptyArticle);
+  const [loading, setLoading] = useState(true); // Loading state
   const { id } = useParams<{ id: string }>();
   const navigate = useRouter();
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:8082/api/articles/${id}`)
-        .then((res) => res.json())
-        .then((json) => setArticle(json))
-        .catch((err) => console.log("Error from ShowArticleDetails: " + err));
+        setLoading(true); // Set loading to true before fetching
+        fetch(`http://localhost:8082/api/analyst/${id}`) // Ensure the endpoint is correct
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return res.json();
+            })
+            .then((json) => {
+                setArticle(json); // Update the state with the new article data
+                setLoading(false); // Set loading to false after fetching
+            })
+            .catch((err) => {
+                console.log("Error from ShowArticleDetails: " + err);
+                setLoading(false); // Set loading to false on error
+            });
     }
-  }, [id]);
+}, [id]);
+
 
   const onDeleteClick = (id: string) => {
-    fetch(`http://localhost:8082/api/articles/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:8082/api/analyst/${id}`, { method: "DELETE" })
       .then(() => navigate.push("/"))
       .catch((err) =>
         console.log("Error from ShowArticleDetails_deleteClick: " + err)
       );
   };
+
+  if (loading) {
+    return <div className="loading">Loading article details...</div>; // Loading indicator
+  }
 
   return (
     <div className="ShowArticleDetails">
@@ -46,7 +64,6 @@ function ShowArticleDetails() {
             <p className="lead">View Article&apos;s Info</p>
           </div>
         </div>
-        {/* Add margin-top to create space between the paragraph and the table */}
         <div className="row justify-content-center mt-4">
           <div className="col-md-10 m-auto">
             <div>
@@ -55,27 +72,27 @@ function ShowArticleDetails() {
                   <tr>
                     <th scope="row">1</th>
                     <td>Title</td>
-                    <td>{article.title}</td>
+                    <td>{article.title || "N/A"}</td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
                     <td>Author</td>
-                    <td>{article.authors}</td>
+                    <td>{article.authors || "N/A"}</td>
                   </tr>
                   <tr>
                     <th scope="row">3</th>
                     <td>Claim</td>
-                    <td>{article.claim}</td>
+                    <td>{article.claim || "N/A"}</td>
                   </tr>
                   <tr>
                     <th scope="row">4</th>
                     <td>Published Year</td>
-                    <td>{article.pubyear?.toString()}</td>
+                    <td>{article.pubyear ? article.pubyear.toString() : "N/A"}</td>
                   </tr>
                   <tr>
                     <th scope="row">5</th>
                     <td>Evidence</td>
-                    <td>{article.evidence}</td>
+                    <td>{article.evidence || "N/A"}</td>
                   </tr>
                 </tbody>
               </table>
@@ -94,7 +111,7 @@ function ShowArticleDetails() {
           </div>
           <div className="col-md-5 text-right">
             <Link
-              href={`/edit-book/${article._id}`}
+              href={`/edit-article/${article._id}`}
               className="btn btn-outline-info btn-lg btn-block mb-4 fs-6"
             >
               Edit Article

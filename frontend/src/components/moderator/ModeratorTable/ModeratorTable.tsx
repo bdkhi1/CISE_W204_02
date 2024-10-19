@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'; 
 import { useTable, useSortBy, usePagination, useColumnOrder, useGlobalFilter } from 'react-table';
-import { COLUMNS } from './Analystcolumns'; 
-import useFetchArticles from './AnalystfetchArticles';
+import { COLUMNS } from './Moderatorcolumns'; 
+import useFetchArticles from './ModeratorfetchArticles';
 import styles from './table.module.scss';
 import { useParams, useRouter } from "next/navigation";
 
@@ -17,18 +17,46 @@ export const BasicTable: React.FC = () => {
         setArticles(fetchedArticles);
     }, [fetchedArticles]);
 
-    const onDeleteClick = (id: string) => {
-        fetch(`http://localhost:8082/api/analyst/${id}`, { method: "DELETE" })
-          .then((response) => {
+    // Function to handle article submission
+    const onSubmitClick = async (article) => {
+        try {
+            // Call the analyst API to submit the article
+            const response = await fetch(`http://localhost:8082/api/analyst`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(article),
+            });
+
             if (response.ok) {
-              const updatedArticles = articles.filter(article => article._id !== id);
-              setArticles(updatedArticles); 
+                // If submission is successful, delete the article from the database
+                await onDeleteClick(article._id); // Delete the article from the database
             } else {
-              console.error("Failed to delete the article");
+                const errorData = await response.json();
+                console.error("Failed to submit the article:", errorData);
             }
-          })
-          .catch((err) => console.log("Error from ShowArticleDetails_deleteClick: " + err));
-      };
+        } catch (err) {
+            console.error("Error from onSubmitClick: ", err);
+        }
+    };
+
+    // Function to handle article deletion
+    const onDeleteClick = async (id: string) => {
+            try {
+                const response = await fetch(`http://localhost:8082/api/moderation/${id}`, { method: "DELETE" });
+                if (response.ok) {
+                    // Remove the deleted article from the local state
+                    const updatedArticles = articles.filter(article => article._id !== id);
+                    setArticles(updatedArticles); 
+                } else {
+                    const errorData = await response.json();
+                    console.error("Failed to delete the article:", errorData);
+                }
+            } catch (err) {
+                console.error("Error from onDeleteClick: ", err);
+            }
+    };
 
     // Define columns so publication date is just a year
     const columns = useMemo(() => [
@@ -44,19 +72,20 @@ export const BasicTable: React.FC = () => {
         {
             Header: 'Actions', 
             id: 'actions',
-            // Render the Analyse button
             Cell: ({ row }) => (
                 <div className={styles.actionButtons}>
-                    <button 
-                        className={styles.analyseButton}
-                        onClick={() => navigate.push(`/show-article/${row.original._id}`)} // Navigate to the show article details page
-                    >
-                        Analyse
+                   <div className={styles.actionButtons}>
+                    <button className={styles.editButton} onClick={() => onSubmitClick(row.original)}>
+                        ✅ Approve
                     </button>
+                    <button className={styles.deleteButton} onClick={() => onDeleteClick(row.original._id)}>
+                        ❌ Reject
+                    </button>
+                </div>
                 </div>
             ),
         },
-    ], [navigate]); // Add navigate as a dependency
+    ], [articles]);
 
     const data = useMemo(() => Array.isArray(articles) ? articles : [], [articles]);
 
@@ -124,7 +153,6 @@ export const BasicTable: React.FC = () => {
                                 className={styles.toggleButton}
                                 onClick={() => toggleColumnVisibility(column.id)} 
                             >
-                                {/*@ts-expect-error*/}
                                 {column.isVisible ? 'Hide' : 'Show'} {column.Header}
                             </button>
                         ))}

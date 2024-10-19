@@ -23,6 +23,14 @@ export class Analyst {
   @Prop()
   practice: string;
 
+  @Prop()
+  evidence: string;
+
+
+  @Prop()
+  claim: string;
+
+
   @Prop({ type: Date, default: Date.now })
   updated_date: Date;
 }
