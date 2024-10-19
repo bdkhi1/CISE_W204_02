@@ -16,6 +16,7 @@ const CreateArticleComponent = () => {
     "Agile Development",
     "Continuous Integration",
     "Test-Driven Development",
+    "Pair Programming",
     "Code Review",
   ];
 
@@ -28,7 +29,13 @@ const CreateArticleComponent = () => {
   };
 
   const validateForm = () => {
-    if (!article.title || authors.length === 0 || !article.pubyear || !article.source || !article.practice) {
+    if (
+      !article.title ||
+      authors.length === 0 ||
+      !article.pubyear ||
+      !article.source ||
+      !article.practice
+    ) {
       return "Please fill in all required fields.";
     }
     return null;
@@ -36,7 +43,7 @@ const CreateArticleComponent = () => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     const validationError = validateForm();
     if (validationError) {
       setErrorMessage(validationError);
@@ -46,8 +53,8 @@ const CreateArticleComponent = () => {
 
     const articleToSubmit = {
       ...article,
-      authors: authors.join(', '),
-      pubyear: new Date(article.pubyear).toISOString(), // Using ISO format for consistency
+      authors: authors.join(", "),
+      pubyear: new Date(article.pubyear).toISOString(),
       updated_date: new Date().toISOString(),
     };
 
@@ -70,8 +77,10 @@ const CreateArticleComponent = () => {
         navigate.push("/");
       })
       .catch((err) => {
-        console.error('Error from CreateArticle: ', err);
-        setErrorMessage("An error occurred while submitting the article. Please try again.");
+        console.error("Error from CreateArticle: ", err);
+        setErrorMessage(
+          "An error occurred while submitting the article. Please try again."
+        );
       });
   };
 
@@ -84,9 +93,7 @@ const CreateArticleComponent = () => {
   };
 
   const changeAuthor = (index: number, value: string) => {
-    setAuthors(
-      authors.map((oldValue, i) => (index === i ? value : oldValue))
-    );
+    setAuthors(authors.map((oldValue, i) => (index === i ? value : oldValue)));
   };
 
   return (
@@ -95,20 +102,23 @@ const CreateArticleComponent = () => {
       <div className="CreateArticle py-5">
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
-              <Link href="/" className="btn btn-outline-warning float-left mb-3">
+            <div className="col-md-10 m-auto">
+              <Link href="/" className="btn btn-outline-warning">
                 Show Article List
               </Link>
             </div>
             <div className="col-md-10 m-auto">
               <h1 className="display-4 text-center title">Add Article</h1>
-              <p className="lead text-center description">Create a new article</p>
+              <p className="lead text-center description mb-5">
+                Create a new article
+              </p>
 
               {/* Error message display */}
-              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+              {errorMessage && (
+                <div className="alert alert-danger">{errorMessage}</div>
+              )}
 
               <form noValidate onSubmit={onSubmit} className="form-container">
-
                 <div className="form-group">
                   <input
                     type="text"
@@ -122,12 +132,17 @@ const CreateArticleComponent = () => {
                 </div>
 
                 {authors.map((author, index) => (
-                  <div key={`author-${index}`} className="form-group d-flex align-items-center mb-3">
+                  <div
+                    key={`author-${index}`}
+                    className="form-group d-flex align-items-center mb-3"
+                  >
                     <input
                       type="text"
                       placeholder="Author Name"
                       value={author}
-                      onChange={(event) => changeAuthor(index, event.target.value)}
+                      onChange={(event) =>
+                        changeAuthor(index, event.target.value)
+                      }
                       className="form-control"
                       required
                     />
@@ -166,7 +181,11 @@ const CreateArticleComponent = () => {
                     placeholder="Published Date"
                     name="pubyear"
                     className="form-control"
-                    value={article.pubyear ? article.pubyear.toString().split('T')[0] : ''}
+                    value={
+                      article.pubyear
+                        ? article.pubyear.toString().split("T")[0]
+                        : ""
+                    }
                     onChange={onChange}
                     required
                   />
@@ -185,7 +204,9 @@ const CreateArticleComponent = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="practice">Select Software Engineering Practice</label>
+                  <label htmlFor="practice">
+                    Select Software Engineering Practice
+                  </label>
                   <select
                     name="practice"
                     className="form-control"

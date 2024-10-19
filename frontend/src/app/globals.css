@@ -19,9 +19,10 @@
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   line-height: 1.6;
-  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease;
 }
 
 /* Consistent dark background for sections */
@@ -59,7 +60,8 @@ body {
   border: 2px solid var(--input-border-color);
   border-radius: 8px;
   color: var(--text-color);
-  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  transition: border-color var(--transition-speed),
+    box-shadow var(--transition-speed);
 }
 
 .form-control:focus {
@@ -82,7 +84,8 @@ textarea.form-control {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
+  transition: background-color var(--transition-speed),
+    transform var(--transition-speed);
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -125,7 +128,8 @@ textarea.form-control {
   background-color: var(--card-background-color);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  transition: transform var(--transition-speed),
+    box-shadow var(--transition-speed);
 }
 
 .card-container:hover {

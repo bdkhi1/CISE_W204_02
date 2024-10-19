@@ -43,6 +43,7 @@ const PopulatedNavBar = () => {
       <NavItem dropdown>
         Pages <IoMdArrowDropdown />
         <NavDropdown>
+          <NavItem route="/create-article">Submitter</NavItem>
           <NavItem route="/moderator-dashboard">Moderator</NavItem>
           <NavItem route="/analyst">Analyst</NavItem>
           <NavItem route="/admin">Admin</NavItem>

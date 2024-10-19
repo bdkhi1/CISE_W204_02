@@ -1,7 +1,6 @@
-
-import React, { useEffect } from 'react';
-import { Article } from './Article';
-import styles from './ArticleModal.module.css';
+import React, { useEffect } from "react";
+import { Article } from "./Article";
+import styles from "./ArticleModal.module.css";
 
 interface ArticleModalProps {
   article: Article;
@@ -11,13 +10,13 @@ interface ArticleModalProps {
 const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -32,7 +31,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
         <button className={styles.closeButton} onClick={onClose}>
           ×
         </button>
-        
+
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{article.title}</h2>
           <span className={styles.practice}>{article.practice}</span>
@@ -56,7 +55,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
 
           <div className={styles.infoGroup}>
             <label>DOI</label>
-            <p>{article.doi || 'N/A'}</p>
+            <p>{article.doi || "N/A"}</p>
           </div>
 
           <div className={styles.infoGroup}>
