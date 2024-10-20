@@ -2,7 +2,6 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "class-validator": "^0.14.1",
-    "cross-validator": "^0.0.3",
     "mongodb": "^6.9.0",
     "mongoose": "^8.6.3",
     "next": "^14.2.13",
