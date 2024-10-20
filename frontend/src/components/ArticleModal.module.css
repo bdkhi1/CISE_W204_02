@@ -147,6 +147,15 @@
     color: var(--accent-color);
     margin-bottom: 0.5rem;
   }
+  .doiLink {
+    color: rgb(122, 222, 255); 
+    text-decoration: underline;
+    cursor: pointer; 
+  }
+  
+  .doiLink:hover {
+    color: rgb(0, 200, 255);
+  }
   
   .infoGroup p {
     color: var(--text-color);

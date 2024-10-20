@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "../dashboard.module.scss";
 import ModeratorTable from "./ModeratorTable/ModeratorTable"
-const AnalystDashboard: React.FC = () => {
+const ModeratorDashboard: React.FC = () => {
   return (
     <div className={styles.pageBackground}>
       <div className={styles.dashboardContainer}>        
@@ -17,4 +17,4 @@ const AnalystDashboard: React.FC = () => {
   );
 };
 
-export default AnalystDashboard;
+export default ModeratorDashboard;

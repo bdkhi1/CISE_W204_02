@@ -30,13 +30,23 @@ export const BasicTable: React.FC = () => {
           .catch((err) => console.log("Error from ShowArticleDetails_deleteClick: " + err));
       };
 
-    // Define columns so publication date is just a year
+    // Define columns to customize DOI rendering
     const columns = useMemo(() => [
         ...COLUMNS.map(column => {
             if (column.accessor === 'pubyear') {
                 return {
                     ...column,
                     Cell: ({ value }) => value ? new Date(value).getFullYear() : ''
+                };
+            }
+            if (column.accessor === 'doi') {
+                return {
+                    ...column,
+                    Cell: ({ value }) => (
+                        <a href={value} target="_blank" rel="noopener noreferrer">
+                            {value}
+                        </a>
+                    ),
                 };
             }
             return column; 
@@ -49,14 +59,14 @@ export const BasicTable: React.FC = () => {
                 <div className={styles.actionButtons}>
                     <button 
                         className={styles.analyseButton}
-                        onClick={() => navigate.push(`/show-article/${row.original._id}`)} // Navigate to the show article details page
+                        onClick={() => navigate.push(`/show-article/${row.original._id}`)} 
                     >
-                        Analyse
+                       🔍 Analyse
                     </button>
                 </div>
             ),
         },
-    ], [navigate]); // Add navigate as a dependency
+    ], [navigate]); 
 
     const data = useMemo(() => Array.isArray(articles) ? articles : [], [articles]);
 

@@ -40,13 +40,5 @@ export const COLUMNS: Column<Article>[] = [
     {
         Header: 'Practice',
         accessor: 'practice',
-    },
-    {
-        Header: 'Claim',
-        accessor: 'claim',
-    },
-    {
-        Header: 'Evidence',
-        accessor: 'evidence',
-    },
+    }
 ];

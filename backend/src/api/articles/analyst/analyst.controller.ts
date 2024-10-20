@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Get,Put, Delete, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { AnalystService } from './analyst.service';
-import { CreateArticleDto } from '../article/create-article.dto';
 import { EditArticleDto } from './edti-article.dto';
+import { CreateArticleDto } from '../article/create-article.dto';
 import { error } from 'console';
 
 @Controller('api/analyst')

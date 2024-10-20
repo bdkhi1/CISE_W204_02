@@ -15,10 +15,6 @@ interface Article {
 // Define columns with action handlers included
 export const COLUMNS: Column<Article>[] = [
     {
-        Header: 'Id',
-        accessor: 'id', // Accessor is the "key" in the data
-    },
-    {
         Header: 'Title',
         accessor: 'title',
     },

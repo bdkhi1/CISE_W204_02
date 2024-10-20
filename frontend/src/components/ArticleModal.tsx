@@ -55,7 +55,20 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
 
           <div className={styles.infoGroup}>
             <label>DOI</label>
-            <p>{article.doi || "N/A"}</p>
+            {article.doi ? (
+              <p>
+                <a
+                  href={`https://doi.org/${article.doi}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.doiLink} 
+                >
+                  {article.doi}
+                </a>
+              </p>
+            ) : (
+              <p>N/A</p>
+            )}
           </div>
 
           <div className={styles.infoGroup}>

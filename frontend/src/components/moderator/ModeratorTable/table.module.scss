@@ -54,6 +54,15 @@
     font-size: 1.2rem;
   }
 }
+.doiLink {
+  color:  rgb(0, 208, 255); 
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+      color: rgb(91, 91, 250);
+  }
+}
 
 .columnToggles {
   .columnList {
