@@ -1,7 +1,9 @@
 "use client";
 
+import { IoMdArrowDropdown } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import NavBar from "./nav/NavBar";
+import NavDropdown from "./nav/NavDropdown";
 import NavItem from "./nav/NavItem";
 
 const PopulatedNavBar = () => {
@@ -23,8 +25,8 @@ const PopulatedNavBar = () => {
         </NavItem>
       )}
 
-      {pathname == "/moderator" && (
-        <NavItem route="/moderator" end>
+      {pathname == "/moderator-dashboard" && (
+        <NavItem route="/moderator-dashboard" end>
           Moderator
         </NavItem>
       )}
@@ -37,6 +39,15 @@ const PopulatedNavBar = () => {
 
       <NavItem route="/" end>
         Home
+      </NavItem>
+      <NavItem dropdown>
+        Pages <IoMdArrowDropdown />
+        <NavDropdown>
+          <NavItem route="/create-article">Submitter</NavItem>
+          <NavItem route="/moderator-dashboard">Moderator</NavItem>
+          <NavItem route="/analyst">Analyst</NavItem>
+          <NavItem route="/admin">Admin</NavItem>
+        </NavDropdown>
       </NavItem>
     </NavBar>
   );

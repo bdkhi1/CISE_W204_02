@@ -1,0 +1,32 @@
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Dashboard Table Styles */
+.pageBackground {
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.dashboardContainer {
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start;
+  padding: 20px; 
+  text-align: center; 
+}
+
+.dashboardTitle {
+  font-size: 2.5rem; 
+  margin-bottom: 10px; 
+  color: #ffd700; 
+}
+
+.dashboardDesc {
+  font-size: 1.5rem; 
+  margin-bottom: 20px;
+  color: #cccccc; 
+}

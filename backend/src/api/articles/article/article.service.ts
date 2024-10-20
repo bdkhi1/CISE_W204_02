@@ -3,6 +3,8 @@ import { Article } from './article.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateArticleDto } from './create-article.dto';
+import { EditArticleDto } from '../analyst/edti-article.dto';
+
 
 @Injectable()
 export class ArticleService {
