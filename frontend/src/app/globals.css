@@ -43,8 +43,6 @@ body {
 .form-group {
   margin-bottom: 1.5rem;
   animation: fadeInUp 0.5s ease-out forwards;
-  max-width: 70%;
-  align-items: center;
 }
 
 .form-label {
