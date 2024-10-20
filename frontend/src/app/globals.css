@@ -43,6 +43,8 @@ body {
 .form-group {
   margin-bottom: 1.5rem;
   animation: fadeInUp 0.5s ease-out forwards;
+  max-width: 70%;
+  align-items: center;
 }
 
 .form-label {
@@ -56,10 +58,11 @@ body {
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1.1rem;
-  background-color: var(--input-background-color);
+  background-color: rgb(208, 208, 208);
   border: 2px solid var(--input-border-color);
   border-radius: 8px;
-  color: var(--text-color);
+  color: rgb(76, 76, 76);
+
   transition: border-color var(--transition-speed),
     box-shadow var(--transition-speed);
 }
